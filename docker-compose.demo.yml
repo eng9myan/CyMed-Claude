@@ -21,6 +21,7 @@ services:
     restart: unless-stopped
 
   backend:
+    image: ${BACKEND_IMAGE:-cymed-backend:latest}
     build:
       context: ./cymed_python
       dockerfile: Dockerfile
@@ -63,6 +64,7 @@ services:
         condition: service_started
 
   frontend:
+    image: ${FRONTEND_IMAGE:-cymed-frontend:latest}
     build:
       context: ./frontend
       dockerfile: Dockerfile
