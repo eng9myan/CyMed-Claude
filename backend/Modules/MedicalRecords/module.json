@@ -1,0 +1,12 @@
+{
+    "name": "MedicalRecords",
+    "alias": "medicalrecords",
+    "description": "MedicalRecords management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "medicalrecords"],
+    "priority": 0,
+    "providers": [
+        "Modules\\MedicalRecords\\Providers\\MedicalRecordsServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

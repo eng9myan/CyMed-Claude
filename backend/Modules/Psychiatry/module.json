@@ -1,0 +1,12 @@
+{
+    "name": "Psychiatry",
+    "alias": "psychiatry",
+    "description": "Psychiatry and mental health management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "psychiatry", "mental-health"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Psychiatry\\Providers\\PsychiatryServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

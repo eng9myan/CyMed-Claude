@@ -1,0 +1,12 @@
+{
+    "name": "Inventory",
+    "alias": "inventory",
+    "description": "Inventory management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "inventory"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Inventory\\Providers\\InventoryServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

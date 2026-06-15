@@ -1,0 +1,10 @@
+﻿from rest_framework.routers import DefaultRouter
+from .views import LabOrderViewSet, LabPanelViewSet, LabResultViewSet
+
+router = DefaultRouter()
+router.register(r"orders", LabOrderViewSet, basename="lab-order")
+router.register(r"panels", LabPanelViewSet, basename="lab-panel")
+router.register(r"results", LabResultViewSet, basename="lab-result")
+
+urlpatterns = router.urls
+

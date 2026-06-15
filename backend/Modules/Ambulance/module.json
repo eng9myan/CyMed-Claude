@@ -1,0 +1,12 @@
+{
+    "name": "Ambulance",
+    "alias": "ambulance",
+    "description": "Ambulance management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "ambulance"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Ambulance\\Providers\\AmbulanceServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

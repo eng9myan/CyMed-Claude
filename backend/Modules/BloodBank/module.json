@@ -1,0 +1,12 @@
+{
+    "name": "BloodBank",
+    "alias": "blood-bank",
+    "description": "Blood bank donor management and transfusion tracking for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "blood-bank"],
+    "priority": 0,
+    "providers": [
+        "Modules\\BloodBank\\Providers\\BloodBankServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

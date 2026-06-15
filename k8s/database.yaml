@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cymed-postgres
+spec:
+  serviceName: "cymed-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cymed-postgres
+  template:
+    metadata:
+      labels:
+        app: cymed-postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "password"
+        - name: POSTGRES_DB
+          value: "cymed_db"
+        ports:
+        - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cymed-postgres
+spec:
+  selector:
+    app: cymed-postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cymed-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cymed-redis
+  template:
+    metadata:
+      labels:
+        app: cymed-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cymed-redis
+spec:
+  selector:
+    app: cymed-redis
+  ports:
+  - port: 6379
+    targetPort: 6379

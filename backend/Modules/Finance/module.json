@@ -1,0 +1,12 @@
+{
+    "name": "Finance",
+    "alias": "finance",
+    "description": "Finance management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "finance"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Finance\\Providers\\FinanceServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

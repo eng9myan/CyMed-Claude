@@ -1,0 +1,12 @@
+{
+    "name": "Appointment",
+    "alias": "appointment",
+    "description": "Appointment management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "appointment"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Appointment\\Providers\\AppointmentServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

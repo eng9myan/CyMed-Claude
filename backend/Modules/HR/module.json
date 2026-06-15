@@ -1,0 +1,12 @@
+{
+    "name": "HR",
+    "alias": "hr",
+    "description": "HR management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "hr"],
+    "priority": 0,
+    "providers": [
+        "Modules\\HR\\Providers\\HRServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

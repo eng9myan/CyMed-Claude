@@ -1,0 +1,12 @@
+{
+    "name": "Patient",
+    "alias": "patient",
+    "description": "Patient management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "patient"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Patient\\Providers\\PatientServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

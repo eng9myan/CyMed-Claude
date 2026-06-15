@@ -1,0 +1,12 @@
+{
+    "name": "Dermatology",
+    "alias": "dermatology",
+    "description": "Dermatology management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "dermatology"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Dermatology\\Providers\\DermatologyServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

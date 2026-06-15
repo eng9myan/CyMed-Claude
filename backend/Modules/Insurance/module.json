@@ -1,0 +1,12 @@
+{
+    "name": "Insurance",
+    "alias": "insurance",
+    "description": "Insurance management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "insurance"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Insurance\\Providers\\InsuranceServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

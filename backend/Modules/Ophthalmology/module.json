@@ -1,0 +1,12 @@
+{
+    "name": "Ophthalmology",
+    "alias": "ophthalmology",
+    "description": "Ophthalmology management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "ophthalmology"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Ophthalmology\\Providers\\OphthalmologyServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

@@ -1,0 +1,12 @@
+{
+    "name": "EMR",
+    "alias": "emr",
+    "description": "EMR management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "emr"],
+    "priority": 0,
+    "providers": [
+        "Modules\\EMR\\Providers\\EMRServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

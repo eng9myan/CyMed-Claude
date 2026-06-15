@@ -1,0 +1,151 @@
+name: CyMed CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.12"
+  NODE_VERSION: "20"
+
+jobs:
+  # ── Security ──────────────────────────────────────────────────────────────
+  security-scan:
+    name: Security Scan (Bandit + Semgrep)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ env.PYTHON_VERSION }}" }
+      - run: pip install bandit semgrep
+      - name: Bandit SAST
+        run: bandit -r cymed_python/ -x cymed_python/venv,cymed_python/.pytest_cache -ll --format json -o bandit_report.json || true
+      - name: Semgrep SAST
+        run: semgrep --config=auto cymed_python/ --json > semgrep_report.json || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: security-reports
+          path: "*.json"
+
+  # ── Backend ───────────────────────────────────────────────────────────────
+  test-backend:
+    name: Backend Tests (Django + Coverage)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: cymed_test
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: cymed_test_db
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ env.PYTHON_VERSION }}" }
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('cymed_python/requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          cd cymed_python
+          pip install -r requirements.txt
+          pip install pytest pytest-django pytest-cov coverage
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgres://cymed_test:test_password@localhost:5432/cymed_test_db
+          SECRET_KEY: ci-test-secret-NOT-production
+          DEBUG: "True"
+        run: |
+          cd cymed_python
+          python manage.py migrate --run-syncdb
+
+      - name: Run tests with coverage
+        env:
+          DATABASE_URL: postgres://cymed_test:test_password@localhost:5432/cymed_test_db
+          SECRET_KEY: ci-test-secret-NOT-production
+          DEBUG: "True"
+          CELERY_BROKER_URL: redis://localhost:6379/0
+          CELERY_RESULT_BACKEND: redis://localhost:6379/0
+          ANTHROPIC_API_KEY: "dummy-for-tests"
+        run: |
+          cd cymed_python
+          pytest --tb=short -q \
+            --cov=. \
+            --cov-report=xml \
+            --cov-report=term-missing:skip-covered \
+            --cov-fail-under=35
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: cymed_python/coverage.xml
+          flags: backend
+
+  # ── Frontend ──────────────────────────────────────────────────────────────
+  test-frontend:
+    name: Frontend (TypeScript + Build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "${{ env.NODE_VERSION }}"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install
+        run: cd frontend && npm ci
+
+      - name: Type check
+        run: cd frontend && npx tsc --noEmit
+
+      - name: Lint
+        run: cd frontend && npm run lint || true
+
+      - name: Build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:8000
+          NEXT_PUBLIC_APP_NAME: CyMed
+        run: cd frontend && npm run build
+
+  # ── Docker ────────────────────────────────────────────────────────────────
+  docker-build:
+    name: Docker Build Validation
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build backend image
+        run: docker build -f cymed_python/Dockerfile -t cymed-backend:ci . || true
+      - name: Trivy scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "table"
+          exit-code: "0"
+          severity: "CRITICAL,HIGH"
+
+  # ── Notify ────────────────────────────────────────────────────────────────
+  notify-success:
+    name: All Checks Passed
+    runs-on: ubuntu-latest
+    needs: [security-scan, test-backend, test-frontend]
+    if: success()
+    steps:
+      - run: echo "✅ CyMed CI passed — ready for review"

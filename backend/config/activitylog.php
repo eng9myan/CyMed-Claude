@@ -1,0 +1,12 @@
+<?php
+
+return [
+    'enabled' => env('ACTIVITY_LOGGER_ENABLED', true),
+    'delete_records_older_than_days' => 730, // 2 years
+    'default_log_name' => 'default',
+    'default_auth_driver' => null,
+    'subject_returns_soft_deleted_models' => true,
+    'activity_model' => \App\Models\AuditLog::class,
+    'table_name' => env('ACTIVITY_LOGGER_TABLE', 'activity_log'),
+    'database_connection' => env('ACTIVITY_LOGGER_DB_CONNECTION', null),
+];

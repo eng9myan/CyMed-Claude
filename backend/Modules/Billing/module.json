@@ -1,0 +1,12 @@
+{
+    "name": "Billing",
+    "alias": "billing",
+    "description": "Billing management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "billing"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Billing\\Providers\\BillingServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

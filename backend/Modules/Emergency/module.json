@@ -1,0 +1,12 @@
+{
+    "name": "Emergency",
+    "alias": "emergency",
+    "description": "Emergency management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "emergency"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Emergency\\Providers\\EmergencyServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

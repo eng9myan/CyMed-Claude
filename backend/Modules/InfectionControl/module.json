@@ -1,0 +1,12 @@
+{
+    "name": "InfectionControl",
+    "alias": "infectioncontrol",
+    "description": "InfectionControl management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "infectioncontrol"],
+    "priority": 0,
+    "providers": [
+        "Modules\\InfectionControl\\Providers\\InfectionControlServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

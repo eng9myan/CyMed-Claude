@@ -1,0 +1,12 @@
+{
+    "name": "Maternity",
+    "alias": "maternity",
+    "description": "Maternity management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "maternity"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Maternity\\Providers\\MaternityServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

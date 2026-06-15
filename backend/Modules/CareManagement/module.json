@@ -1,0 +1,12 @@
+{
+    "name": "CareManagement",
+    "alias": "caremanagement",
+    "description": "CareManagement management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "caremanagement"],
+    "priority": 0,
+    "providers": [
+        "Modules\\CareManagement\\Providers\\CareManagementServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

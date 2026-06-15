@@ -1,0 +1,12 @@
+{
+    "name": "Radiology",
+    "alias": "radiology",
+    "description": "Radiology management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "radiology"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Radiology\\Providers\\RadiologyServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

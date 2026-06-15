@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyMed - Healthcare ERP</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i class="ri-hospital-fill"></i>
+                </div>
+                <span>CyMed</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Discuss</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="ri-user-heart-line"></i>
+                    <span>Patients</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-calendar-event-line"></i>
+                    <span>Appointments</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-flask-line"></i>
+                    <span>Laboratory</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-capsule-line"></i>
+                    <span>Pharmacy</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-bank-card-line"></i>
+                    <span>Billing</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-settings-3-line"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Dr+Mitchell&background=017E84&color=fff" alt="User">
+                    <div class="user-info">
+                        <span class="user-name">Dr. Mitchell</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <span class="breadcrumb-item">Patients</span>
+                    <i class="ri-arrow-right-s-line separator"></i>
+                    <span class="breadcrumb-item active">Directory</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="search-bar">
+                        <i class="ri-search-line"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                    <button class="icon-btn"><i class="ri-notification-3-line"></i></button>
+                    <button class="icon-btn"><i class="ri-message-3-line"></i></button>
+                    <button class="icon-btn avatar-btn">
+                        <img src="https://ui-avatars.com/api/?name=Dr+Mitchell&background=017E84&color=fff&size=32" alt="User">
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-wrapper">
+                <div class="action-bar">
+                    <button class="btn btn-primary">New</button>
+                    <button class="btn btn-secondary">Upload</button>
+                    <div class="action-spacer"></div>
+                    <div class="view-toggles">
+                        <button class="icon-btn active"><i class="ri-layout-grid-fill"></i></button>
+                        <button class="icon-btn"><i class="ri-list-check"></i></button>
+                    </div>
+                </div>
+
+                <!-- Kanban Board -->
+                <div class="kanban-board">
+                    <!-- Kanban Card 1 -->
+                    <div class="kanban-card">
+                        <div class="card-header">
+                            <span class="status-badge status-active">Inpatient</span>
+                            <button class="icon-btn-sm"><i class="ri-more-2-fill"></i></button>
+                        </div>
+                        <div class="card-body">
+                            <div class="patient-header">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+Jenkins&background=random&size=48" alt="Patient" class="avatar-md">
+                                <div>
+                                    <h3 class="patient-name">Sarah Jenkins</h3>
+                                    <p class="patient-mrn">CY-100492</p>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <span class="tag"><i class="ri-hotel-bed-line"></i> Ward 4B</span>
+                                <span class="tag"><i class="ri-heart-pulse-line"></i> Cardiology</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-stats">
+                                <span><i class="ri-attachment-2"></i> 3</span>
+                                <span><i class="ri-chat-3-line"></i> 1</span>
+                            </div>
+                            <img src="https://ui-avatars.com/api/?name=Dr+Mitchell&background=017E84&color=fff&size=24" alt="Assigned" class="avatar-sm">
+                        </div>
+                    </div>
+                    <!-- Kanban Card 2 -->
+                    <div class="kanban-card">
+                        <div class="card-header">
+                            <span class="status-badge status-outpatient">Outpatient</span>
+                            <button class="icon-btn-sm"><i class="ri-more-2-fill"></i></button>
+                        </div>
+                        <div class="card-body">
+                            <div class="patient-header">
+                                <img src="https://ui-avatars.com/api/?name=Ahmed+Al-Sayed&background=random&size=48" alt="Patient" class="avatar-md">
+                                <div>
+                                    <h3 class="patient-name">Ahmed Al-Sayed</h3>
+                                    <p class="patient-mrn">CY-100501</p>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <span class="tag"><i class="ri-calendar-check-line"></i> 14:00 Today</span>
+                                <span class="tag"><i class="ri-eye-line"></i> Ophthalmology</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-stats">
+                                <span><i class="ri-attachment-2"></i> 1</span>
+                            </div>
+                            <img src="https://ui-avatars.com/api/?name=Dr+Mitchell&background=017E84&color=fff&size=24" alt="Assigned" class="avatar-sm">
+                        </div>
+                    </div>
+                    
+                    <!-- Kanban Card 3 -->
+                    <div class="kanban-card">
+                        <div class="card-header">
+                            <span class="status-badge status-critical">ER / Triage</span>
+                            <button class="icon-btn-sm"><i class="ri-more-2-fill"></i></button>
+                        </div>
+                        <div class="card-body">
+                            <div class="patient-header">
+                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=random&size=48" alt="Patient" class="avatar-md">
+                                <div>
+                                    <h3 class="patient-name">John Doe</h3>
+                                    <p class="patient-mrn">CY-100502</p>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <span class="tag alert-tag"><i class="ri-alarm-warning-line"></i> Level 2</span>
+                                <span class="tag"><i class="ri-first-aid-kit-line"></i> Emergency</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-stats">
+                                <span class="critical-text"><i class="ri-time-line"></i> 15m waiting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

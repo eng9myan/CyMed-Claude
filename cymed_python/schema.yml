@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: CyMed National Health Ecosystem API
+  version: 1.0.0
+  description: Master API documentation for all 54 CyMed enterprise applications.
+paths: {}
+components: {}

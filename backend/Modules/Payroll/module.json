@@ -1,0 +1,12 @@
+{
+    "name": "Payroll",
+    "alias": "payroll",
+    "description": "Payroll management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "payroll"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Payroll\\Providers\\PayrollServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

@@ -1,0 +1,12 @@
+{
+    "name": "BedManagement",
+    "alias": "bedmanagement",
+    "description": "BedManagement management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "bedmanagement"],
+    "priority": 0,
+    "providers": [
+        "Modules\\BedManagement\\Providers\\BedManagementServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

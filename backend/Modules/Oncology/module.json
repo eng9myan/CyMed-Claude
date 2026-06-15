@@ -1,0 +1,12 @@
+{
+    "name": "Oncology",
+    "alias": "oncology",
+    "description": "Oncology case management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "oncology"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Oncology\\Providers\\OncologyServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

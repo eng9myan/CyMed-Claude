@@ -1,0 +1,12 @@
+{
+    "name": "Admission",
+    "alias": "admission",
+    "description": "Admission management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "admission"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Admission\\Providers\\AdmissionServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

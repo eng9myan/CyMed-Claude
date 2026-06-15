@@ -1,0 +1,12 @@
+{
+    "name": "ICU",
+    "alias": "icu",
+    "description": "ICU management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "icu"],
+    "priority": 0,
+    "providers": [
+        "Modules\\ICU\\Providers\\ICUServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Pharmacy",
+    "alias": "pharmacy",
+    "description": "Pharmacy management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "pharmacy"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Pharmacy\\Providers\\PharmacyServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

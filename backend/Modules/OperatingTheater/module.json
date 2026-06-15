@@ -1,0 +1,12 @@
+{
+    "name": "OperatingTheater",
+    "alias": "operatingtheater",
+    "description": "OperatingTheater management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "operatingtheater"],
+    "priority": 0,
+    "providers": [
+        "Modules\\OperatingTheater\\Providers\\OperatingTheaterServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Dialysis",
+    "alias": "dialysis",
+    "description": "Dialysis management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "dialysis"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Dialysis\\Providers\\DialysisServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

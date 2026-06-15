@@ -1,0 +1,12 @@
+{
+    "name": "Coding",
+    "alias": "coding",
+    "description": "Coding management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "coding"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Coding\\Providers\\CodingServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

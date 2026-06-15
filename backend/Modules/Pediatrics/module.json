@@ -1,0 +1,12 @@
+{
+    "name": "Pediatrics",
+    "alias": "pediatrics",
+    "description": "Pediatrics management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "pediatrics"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Pediatrics\\Providers\\PediatricsServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

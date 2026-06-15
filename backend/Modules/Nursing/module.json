@@ -1,0 +1,12 @@
+{
+    "name": "Nursing",
+    "alias": "nursing",
+    "description": "Nursing management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "nursing"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Nursing\\Providers\\NursingServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

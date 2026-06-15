@@ -1,0 +1,12 @@
+{
+    "name": "Cardiology",
+    "alias": "cardiology",
+    "description": "Cardiology ECG, echo reports, and cath lab management for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "cardiology"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Cardiology\\Providers\\CardiologyServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}

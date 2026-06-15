@@ -1,0 +1,12 @@
+{
+    "name": "Dental",
+    "alias": "dental",
+    "description": "Dental management module for CyMed Healthcare ERP",
+    "keywords": ["cymed", "healthcare", "dental"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Dental\\Providers\\DentalServiceProvider"
+    ],
+    "aliases": {},
+    "files": []
+}
