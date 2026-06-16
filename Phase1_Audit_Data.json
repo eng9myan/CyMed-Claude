@@ -1,0 +1,669 @@
+[
+  {
+    "module": "account",
+    "status": "OK",
+    "name": "Invoicing",
+    "version": "1.4",
+    "category": "Accounting/Accounting",
+    "depends": [
+      "base_setup",
+      "onboarding",
+      "product",
+      "analytic",
+      "portal",
+      "digest"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "account_check_printing",
+    "status": "OK",
+    "name": "Check Printing Base",
+    "version": "1.0",
+    "category": "Accounting/Accounting",
+    "depends": [
+      "account"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "analytic",
+    "status": "OK",
+    "name": "Analytic Accounting",
+    "version": "1.2",
+    "category": "Accounting/Accounting",
+    "depends": [
+      "base",
+      "mail",
+      "uom"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "auth_signup",
+    "status": "OK",
+    "name": "Signup",
+    "version": "1.0",
+    "category": "Hidden/Tools",
+    "depends": [
+      "base_setup",
+      "mail",
+      "web"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "barcodes",
+    "status": "OK",
+    "name": "Barcode",
+    "version": "2.0",
+    "category": "Supply Chain/Inventory",
+    "depends": [
+      "web"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "base_address_extended",
+    "status": "OK",
+    "name": "Extended Addresses",
+    "version": "1.1",
+    "category": "Sales/Sales",
+    "depends": [
+      "base",
+      "contacts"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": false
+  },
+  {
+    "module": "base_import",
+    "status": "OK",
+    "name": "Base import",
+    "version": "2.0",
+    "category": "Hidden/Tools",
+    "depends": [
+      "web"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": false,
+    "has_static": true
+  },
+  {
+    "module": "base_setup",
+    "status": "OK",
+    "name": "Initial Setup Tools",
+    "version": "1.0",
+    "category": "Hidden",
+    "depends": [
+      "base",
+      "web"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "bus",
+    "status": "OK",
+    "name": "IM Bus",
+    "version": "1.0",
+    "category": "Hidden",
+    "depends": [
+      "base",
+      "web"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": false,
+    "has_static": true
+  },
+  {
+    "module": "calendar",
+    "status": "OK",
+    "name": "Calendar",
+    "version": "1.1",
+    "category": "Productivity/Calendar",
+    "depends": [
+      "base",
+      "mail"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "contacts",
+    "status": "OK",
+    "name": "Contacts",
+    "version": "",
+    "category": "Sales/CRM",
+    "depends": [
+      "base",
+      "mail"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "crm",
+    "status": "OK",
+    "name": "CRM",
+    "version": "1.9",
+    "category": "Sales/CRM",
+    "depends": [
+      "base_setup",
+      "sales_team",
+      "mail",
+      "calendar",
+      "resource",
+      "utm",
+      "web_tour",
+      "contacts",
+      "digest",
+      "phone_validation"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "cymed_branding",
+    "status": "OK",
+    "name": "CyMed Branding",
+    "version": "1.0.0",
+    "category": "Hidden",
+    "depends": [
+      "base",
+      "web",
+      "mail"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "digest",
+    "status": "OK",
+    "name": "KPI Digests",
+    "version": "1.1",
+    "category": "Marketing",
+    "depends": [
+      "mail",
+      "portal",
+      "resource"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "fleet",
+    "status": "OK",
+    "name": "Fleet",
+    "version": "0.1",
+    "category": "Human Resources/Fleet",
+    "depends": [
+      "base",
+      "mail"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "hr",
+    "status": "OK",
+    "name": "Employees",
+    "version": "1.1",
+    "category": "Human Resources/Employees",
+    "depends": [
+      "base_setup",
+      "digest",
+      "phone_validation",
+      "resource_mail",
+      "web"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "hr_attendance",
+    "status": "OK",
+    "name": "Attendances",
+    "version": "2.0",
+    "category": "Human Resources/Attendances",
+    "depends": [
+      "hr",
+      "barcodes",
+      "base_geolocalize"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "hr_holidays",
+    "status": "OK",
+    "name": "Time Off",
+    "version": "1.6",
+    "category": "Human Resources/Time Off",
+    "depends": [
+      "hr",
+      "calendar",
+      "resource"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "hr_recruitment",
+    "status": "OK",
+    "name": "Recruitment",
+    "version": "1.1",
+    "category": "Human Resources/Recruitment",
+    "depends": [
+      "hr",
+      "calendar",
+      "utm",
+      "attachment_indexation",
+      "web_tour",
+      "digest"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "hr_skills",
+    "status": "OK",
+    "name": "Skills Management",
+    "version": "1.0",
+    "category": "Human Resources/Employees",
+    "depends": [
+      "hr"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "l10n_sa",
+    "status": "OK",
+    "name": "Saudi Arabia - Accounting",
+    "version": "2.2",
+    "category": "Accounting/Localizations/Account Charts",
+    "depends": [
+      "l10n_gcc_invoice",
+      "account",
+      "account_debit_note"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "l10n_sa_edi",
+    "status": "OK",
+    "name": "Saudi Arabia - E-invoicing",
+    "version": "0.3",
+    "category": "Accounting/Localizations/EDI",
+    "depends": [
+      "account_edi",
+      "account_edi_ubl_cii",
+      "l10n_sa",
+      "base_vat",
+      "certificate"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "mail",
+    "status": "OK",
+    "name": "Discuss",
+    "version": "1.19",
+    "category": "Productivity/Discuss",
+    "depends": [
+      "base",
+      "base_setup",
+      "bus",
+      "web_tour",
+      "html_editor"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "maintenance",
+    "status": "OK",
+    "name": "Maintenance",
+    "version": "1.0",
+    "category": "Supply Chain/Maintenance",
+    "depends": [
+      "mail"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "mrp",
+    "status": "OK",
+    "name": "Manufacturing",
+    "version": "2.0",
+    "category": "Supply Chain/Manufacturing",
+    "depends": [
+      "product",
+      "stock",
+      "resource"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "point_of_sale",
+    "status": "OK",
+    "name": "Point of Sale",
+    "version": "1.0.2",
+    "category": "Sales/Point of Sale",
+    "depends": [
+      "resource",
+      "stock_account",
+      "barcodes",
+      "html_editor",
+      "digest",
+      "phone_validation",
+      "partner_autocomplete",
+      "iot_base",
+      "google_address_autocomplete"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "portal",
+    "status": "OK",
+    "name": "Customer Portal",
+    "version": "",
+    "category": "Hidden",
+    "depends": [
+      "web",
+      "html_editor",
+      "http_routing",
+      "mail",
+      "auth_signup"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "product",
+    "status": "OK",
+    "name": "Products & Pricelists",
+    "version": "1.2",
+    "category": "Sales/Sales",
+    "depends": [
+      "base",
+      "mail",
+      "uom"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "purchase",
+    "status": "OK",
+    "name": "Purchase",
+    "version": "1.2",
+    "category": "Supply Chain/Purchase",
+    "depends": [
+      "account"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "purchase_stock",
+    "status": "OK",
+    "name": "Purchase Stock",
+    "version": "1.2",
+    "category": "Supply Chain/Purchase",
+    "depends": [
+      "stock_account",
+      "purchase"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "sale",
+    "status": "OK",
+    "name": "Sales",
+    "version": "1.2",
+    "category": "Sales/Sales",
+    "depends": [
+      "sales_team",
+      "account_payment",
+      "utm"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "sale_management",
+    "status": "OK",
+    "name": "Sales",
+    "version": "1.0",
+    "category": "Sales/Sales",
+    "depends": [
+      "sale",
+      "digest"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "sale_stock",
+    "status": "OK",
+    "name": "Sales and Warehouse Management",
+    "version": "1.0",
+    "category": "Sales/Sales",
+    "depends": [
+      "sale",
+      "stock_account"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "stock",
+    "status": "OK",
+    "name": "Inventory",
+    "version": "1.1",
+    "category": "Supply Chain/Inventory",
+    "depends": [
+      "product",
+      "barcodes_gs1_nomenclature",
+      "digest"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "stock_account",
+    "status": "OK",
+    "name": "WMS Accounting",
+    "version": "1.1",
+    "category": "Supply Chain/Inventory",
+    "depends": [
+      "stock",
+      "account"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "uom",
+    "status": "OK",
+    "name": "Units of measure",
+    "version": "1.0",
+    "category": "Sales/Sales",
+    "depends": [
+      "base"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": true,
+    "has_static": true
+  },
+  {
+    "module": "web",
+    "status": "OK",
+    "name": "Web",
+    "version": "1.0",
+    "category": "Hidden",
+    "depends": [
+      "base"
+    ],
+    "author": "CyMed Healthcare Systems",
+    "license": "LGPL-3",
+    "has_init": true,
+    "has_models": true,
+    "has_views": false,
+    "has_static": true
+  }
+]

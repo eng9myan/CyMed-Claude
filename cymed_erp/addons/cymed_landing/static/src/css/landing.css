@@ -1,0 +1,669 @@
+/* ──────────────────────────────────────────────────────────────────────────
+ * CyMed Landing Page
+ * Built on the Cybercom design system.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--cc-font-sans);
+  color: var(--cc-text);
+  background: var(--cc-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+
+.cymed-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--cc-space-5);
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────────── */
+.cymed-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--cc-border);
+}
+.cymed-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.cymed-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--cc-space-3);
+  font-weight: 700;
+}
+.cymed-logo-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--cc-radius);
+  background: var(--cc-gradient-accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  box-shadow: var(--cc-shadow-sm);
+}
+.cymed-logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--cc-primary);
+}
+.cymed-nav-links {
+  display: flex;
+  gap: var(--cc-space-6);
+}
+.cymed-nav-links a {
+  color: var(--cc-gray-600);
+  font-weight: 500;
+  font-size: 15px;
+  transition: color var(--cc-duration) var(--cc-ease);
+}
+.cymed-nav-links a:hover { color: var(--cc-accent); }
+.cymed-nav-cta { display: flex; gap: var(--cc-space-3); }
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+.cymed-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cc-space-2);
+  padding: 10px 20px;
+  border-radius: var(--cc-radius);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--cc-duration) var(--cc-ease);
+  white-space: nowrap;
+}
+.cymed-btn-primary {
+  background: var(--cc-accent);
+  color: white;
+}
+.cymed-btn-primary:hover {
+  background: var(--cc-accent-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--cc-shadow-md);
+  color: white;
+}
+.cymed-btn-outline {
+  background: transparent;
+  color: var(--cc-primary);
+  border-color: var(--cc-border);
+}
+.cymed-btn-outline:hover {
+  border-color: var(--cc-primary);
+  background: var(--cc-gray-50);
+}
+.cymed-btn-ghost {
+  background: transparent;
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+.cymed-btn-ghost:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+  color: white;
+}
+.cymed-btn-lg { padding: 14px 28px; font-size: 16px; }
+.cymed-btn-block { display: flex; width: 100%; }
+.cymed-btn-arrow {
+  transition: transform var(--cc-duration) var(--cc-ease);
+}
+.cymed-btn:hover .cymed-btn-arrow { transform: translateX(4px); }
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+.cymed-hero {
+  background: var(--cc-gradient-hero);
+  color: white;
+  padding: var(--cc-space-9) 0 var(--cc-space-10);
+  position: relative;
+  overflow: hidden;
+}
+.cymed-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(230,126,34,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(59,130,246,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+.cymed-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--cc-space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.cymed-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: var(--cc-radius-full);
+  background: rgba(230,126,34,0.15);
+  color: var(--cc-accent-light);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: var(--cc-space-4);
+  border: 1px solid rgba(230,126,34,0.25);
+}
+.cymed-hero-title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin: 0 0 var(--cc-space-5);
+}
+.cymed-text-gradient {
+  background: var(--cc-gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cymed-hero-subtitle {
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 var(--cc-space-6);
+  max-width: 540px;
+}
+.cymed-hero-cta { display: flex; gap: var(--cc-space-3); margin-bottom: var(--cc-space-7); }
+.cymed-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-5);
+  padding-top: var(--cc-space-5);
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.cymed-trust-item {
+  display: flex;
+  align-items: center;
+  gap: var(--cc-space-2);
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 500;
+}
+.cymed-trust-icon { font-size: 18px; }
+
+.cymed-hero-visual { display: flex; justify-content: center; }
+.cymed-hero-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--cc-radius-lg);
+  padding: var(--cc-space-5);
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--cc-shadow-lg);
+}
+.cymed-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--cc-space-3);
+  padding-bottom: var(--cc-space-4);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: var(--cc-space-4);
+}
+.cymed-card-dots { display: flex; gap: 6px; }
+.cymed-card-dots span {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+.cymed-card-dots span:first-child { background: var(--cc-accent); }
+.cymed-card-title {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+  flex: 1;
+}
+.cymed-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--cc-space-3); }
+.cymed-stat {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: var(--cc-space-4);
+  border-radius: var(--cc-radius);
+}
+.cymed-stat-accent {
+  background: rgba(230,126,34,0.1);
+  border-color: rgba(230,126,34,0.25);
+}
+.cymed-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+  margin-bottom: var(--cc-space-1);
+}
+.cymed-stat-accent .cymed-stat-value { color: var(--cc-accent-light); }
+.cymed-stat-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+.cymed-section { padding: var(--cc-space-10) 0; background: var(--cc-bg); }
+.cymed-section-muted { background: var(--cc-bg-muted); }
+.cymed-section-dark { background: var(--cc-bg-dark); color: var(--cc-text-light); }
+
+.cymed-section-head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto var(--cc-space-7);
+}
+.cymed-eyebrow {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cc-accent);
+  margin-bottom: var(--cc-space-3);
+}
+.cymed-eyebrow-light { color: var(--cc-accent-light); }
+.cymed-section-title {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 var(--cc-space-3);
+}
+.cymed-text-light { color: var(--cc-text-light); }
+.cymed-section-subtitle {
+  font-size: 18px;
+  color: var(--cc-text-muted);
+  margin: 0;
+}
+.cymed-text-light-dim { color: rgba(255,255,255,0.7); }
+
+/* ── Features grid ──────────────────────────────────────────────────────── */
+.cymed-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--cc-space-5);
+}
+.cymed-feature {
+  background: var(--cc-white);
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius-md);
+  padding: var(--cc-space-6);
+  transition: all var(--cc-duration) var(--cc-ease);
+}
+.cymed-feature:hover {
+  border-color: var(--cc-accent);
+  transform: translateY(-4px);
+  box-shadow: var(--cc-shadow-md);
+}
+.cymed-feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--cc-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: var(--cc-space-4);
+}
+.cymed-feature-icon[data-color="primary"] { background: rgba(15,23,42,0.08); }
+.cymed-feature-icon[data-color="accent"]  { background: rgba(230,126,34,0.12); }
+.cymed-feature-icon[data-color="success"] { background: rgba(16,185,129,0.12); }
+.cymed-feature h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 0 0 var(--cc-space-2);
+  letter-spacing: -0.01em;
+}
+.cymed-feature p {
+  font-size: 15px;
+  color: var(--cc-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Security grid ──────────────────────────────────────────────────────── */
+.cymed-security-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--cc-space-5);
+}
+.cymed-security-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--cc-radius-md);
+  padding: var(--cc-space-6);
+}
+.cymed-security-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 var(--cc-space-3);
+  color: white;
+}
+.cymed-security-card p {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Testimonials ───────────────────────────────────────────────────────── */
+.cymed-testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--cc-space-5);
+}
+.cymed-testimonial {
+  background: var(--cc-white);
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius-md);
+  padding: var(--cc-space-6);
+}
+.cymed-testimonial-quote {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--cc-text);
+  margin: 0 0 var(--cc-space-5);
+  font-style: italic;
+}
+.cymed-testimonial-author { display: flex; align-items: center; gap: var(--cc-space-3); }
+.cymed-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--cc-gradient-accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+.cymed-author-name { font-weight: 600; font-size: 14px; }
+.cymed-author-role { font-size: 13px; color: var(--cc-text-muted); }
+
+/* ── Pricing ────────────────────────────────────────────────────────────── */
+.cymed-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--cc-space-5);
+  align-items: start;
+}
+.cymed-price-card {
+  background: var(--cc-white);
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius-md);
+  padding: var(--cc-space-6);
+  position: relative;
+}
+.cymed-price-card-featured {
+  border: 2px solid var(--cc-accent);
+  box-shadow: var(--cc-shadow-md);
+  transform: scale(1.02);
+}
+.cymed-featured-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cc-accent);
+  color: white;
+  padding: 4px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: var(--cc-radius-full);
+  letter-spacing: 0.02em;
+}
+.cymed-price-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 var(--cc-space-4);
+}
+.cymed-price { margin-bottom: var(--cc-space-3); }
+.cymed-price-currency { font-size: 18px; font-weight: 600; color: var(--cc-text-muted); }
+.cymed-price-amount { font-size: 42px; font-weight: 800; letter-spacing: -0.02em; }
+.cymed-price-amount-text { font-size: 32px; font-weight: 800; }
+.cymed-price-period { font-size: 15px; color: var(--cc-text-muted); }
+.cymed-price-desc { font-size: 14px; color: var(--cc-text-muted); margin: 0 0 var(--cc-space-5); }
+.cymed-price-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--cc-space-5);
+}
+.cymed-price-features li {
+  padding: var(--cc-space-2) 0;
+  font-size: 14px;
+  color: var(--cc-text);
+}
+.cymed-price-features li::before {
+  content: "✓ ";
+  color: var(--cc-success);
+  font-weight: 700;
+  margin-right: var(--cc-space-2);
+}
+
+/* ── FAQ ────────────────────────────────────────────────────────────────── */
+.cymed-faq { max-width: 760px; margin: 0 auto; }
+.cymed-faq-item {
+  background: var(--cc-white);
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius);
+  margin-bottom: var(--cc-space-3);
+  overflow: hidden;
+}
+.cymed-faq-item summary {
+  cursor: pointer;
+  padding: var(--cc-space-4) var(--cc-space-5);
+  font-weight: 600;
+  font-size: 16px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cymed-faq-item summary::after {
+  content: "+";
+  font-size: 22px;
+  color: var(--cc-accent);
+  transition: transform var(--cc-duration) var(--cc-ease);
+}
+.cymed-faq-item[open] summary::after { transform: rotate(45deg); }
+.cymed-faq-item p {
+  padding: 0 var(--cc-space-5) var(--cc-space-5);
+  margin: 0;
+  color: var(--cc-text-muted);
+  line-height: 1.6;
+}
+
+/* ── CTA ────────────────────────────────────────────────────────────────── */
+.cymed-cta-section { padding: var(--cc-space-8) 0; background: var(--cc-bg); }
+.cymed-cta-card {
+  background: var(--cc-gradient-hero);
+  color: white;
+  border-radius: var(--cc-radius-lg);
+  padding: var(--cc-space-8);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cymed-cta-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(230,126,34,0.2) 0%, transparent 70%);
+}
+.cymed-cta-card h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 var(--cc-space-3);
+  position: relative;
+}
+.cymed-cta-card p {
+  font-size: 18px;
+  margin: 0 0 var(--cc-space-5);
+  color: rgba(255,255,255,0.85);
+  position: relative;
+}
+.cymed-cta-card .cymed-btn { position: relative; }
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+.cymed-footer {
+  background: var(--cc-primary-dark);
+  color: rgba(255,255,255,0.7);
+  padding: var(--cc-space-8) 0 var(--cc-space-5);
+}
+.cymed-footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: var(--cc-space-6);
+  padding-bottom: var(--cc-space-6);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.cymed-footer-brand p { max-width: 280px; margin-top: var(--cc-space-3); }
+.cymed-footer-col h4 {
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 var(--cc-space-4);
+}
+.cymed-footer-col a {
+  display: block;
+  padding: var(--cc-space-1) 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  transition: color var(--cc-duration) var(--cc-ease);
+}
+.cymed-footer-col a:hover { color: var(--cc-accent); }
+.cymed-footer-bottom {
+  padding-top: var(--cc-space-5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.cymed-footer-social { display: flex; gap: var(--cc-space-3); }
+.cymed-footer-social a {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  transition: all var(--cc-duration) var(--cc-ease);
+}
+.cymed-footer-social a:hover {
+  background: var(--cc-accent);
+  color: white;
+}
+
+/* ── Forms ──────────────────────────────────────────────────────────────── */
+.cymed-form-page { padding: var(--cc-space-8) 0; min-height: 80vh; }
+.cymed-form-container { max-width: 720px; }
+.cymed-form-container h1 {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--cc-space-3);
+}
+.cymed-form-container > p {
+  font-size: 17px;
+  color: var(--cc-text-muted);
+  margin: 0 0 var(--cc-space-6);
+}
+.cymed-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--cc-space-4);
+  margin-bottom: var(--cc-space-5);
+}
+.cymed-form-field { display: flex; flex-direction: column; }
+.cymed-form-field-full { grid-column: 1 / -1; }
+.cymed-form-field label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: var(--cc-space-2);
+}
+.cymed-form-field label span { color: var(--cc-danger); }
+.cymed-form-field input,
+.cymed-form-field textarea {
+  padding: 12px 14px;
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius);
+  font-family: inherit;
+  font-size: 15px;
+  transition: all var(--cc-duration) var(--cc-ease);
+}
+.cymed-form-field input:focus,
+.cymed-form-field textarea:focus {
+  outline: none;
+  border-color: var(--cc-accent);
+  box-shadow: 0 0 0 3px rgba(230,126,34,0.15);
+}
+
+.cymed-thanks-page {
+  padding: var(--cc-space-10) 0;
+  text-align: center;
+  min-height: 60vh;
+}
+.cymed-thanks-page h1 {
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--cc-success);
+  margin: 0 0 var(--cc-space-4);
+}
+.cymed-thanks-page p {
+  font-size: 18px;
+  color: var(--cc-text-muted);
+  max-width: 560px;
+  margin: 0 auto var(--cc-space-5);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .cymed-feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .cymed-security-grid { grid-template-columns: 1fr; }
+  .cymed-testimonial-grid { grid-template-columns: 1fr; }
+  .cymed-pricing-grid { grid-template-columns: 1fr; }
+  .cymed-footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .cymed-nav-links { display: none; }
+  .cymed-hero-grid { grid-template-columns: 1fr; gap: var(--cc-space-6); }
+  .cymed-feature-grid { grid-template-columns: 1fr; }
+  .cymed-footer-grid { grid-template-columns: 1fr; }
+  .cymed-form-grid { grid-template-columns: 1fr; }
+  .cymed-footer-bottom { flex-direction: column; gap: var(--cc-space-3); }
+  .cymed-hero { padding: var(--cc-space-7) 0; }
+  .cymed-section { padding: var(--cc-space-8) 0; }
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+@keyframes cymed-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.cymed-hero-content > * { animation: cymed-fade-up 600ms var(--cc-ease) backwards; }
+.cymed-hero-content > *:nth-child(1) { animation-delay: 0ms; }
+.cymed-hero-content > *:nth-child(2) { animation-delay: 100ms; }
+.cymed-hero-content > *:nth-child(3) { animation-delay: 200ms; }
+.cymed-hero-content > *:nth-child(4) { animation-delay: 300ms; }
+.cymed-hero-content > *:nth-child(5) { animation-delay: 400ms; }

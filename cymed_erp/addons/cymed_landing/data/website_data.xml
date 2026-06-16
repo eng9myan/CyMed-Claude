@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Override homepage to use our landing template -->
+        <record id="cymed_homepage_view" model="ir.ui.view">
+            <field name="name">CyMed Homepage</field>
+            <field name="type">qweb</field>
+            <field name="key">cymed_landing.homepage</field>
+            <field name="arch" type="xml">
+                <t t-call="cymed_landing.landing_page"/>
+            </field>
+        </record>
+    </data>
+</odoo>

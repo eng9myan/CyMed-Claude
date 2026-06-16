@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Remove default Website menus and replace with CyMed navigation -->
+        <record id="website_default_homepage" model="website">
+            <field name="name">CyMed</field>
+            <field name="domain"></field>
+            <field name="default_lang_id" ref="base.lang_en"/>
+        </record>
+    </data>
+</odoo>

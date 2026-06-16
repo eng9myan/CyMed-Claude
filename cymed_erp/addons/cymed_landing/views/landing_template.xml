@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="landing_page" name="CyMed Landing">
+        <t t-call="website.layout">
+            <t t-set="head_meta">
+                <meta name="description" content="CyMed - Enterprise Healthcare ERP. Streamline patient care, billing, and operations in one unified, secure platform."/>
+                <meta name="theme-color" content="#0F172A"/>
+                <link rel="icon" type="image/png" href="/cymed_branding/static/src/img/cymed_favicon.png"/>
+            </t>
+
+            <!-- Navigation -->
+            <nav class="cymed-nav">
+                <div class="cymed-container cymed-nav-inner">
+                    <div class="cymed-nav-brand">
+                        <span class="cymed-logo-mark">+</span>
+                        <span class="cymed-logo-text">CyMed</span>
+                    </div>
+                    <div class="cymed-nav-links">
+                        <a href="#features">Features</a>
+                        <a href="#security">Security</a>
+                        <a href="#testimonials">Customers</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="#faq">FAQ</a>
+                    </div>
+                    <div class="cymed-nav-cta">
+                        <a href="/web/login" class="cymed-btn cymed-btn-outline">Sign In</a>
+                        <a href="/request-demo" class="cymed-btn cymed-btn-primary">Request Demo</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- ── Hero Section ────────────────────────────────────────────── -->
+            <section class="cymed-hero">
+                <div class="cymed-container cymed-hero-grid">
+                    <div class="cymed-hero-content">
+                        <span class="cymed-badge">Healthcare Operations Platform</span>
+                        <h1 class="cymed-hero-title">
+                            Enterprise Healthcare ERP,
+                            <span class="cymed-text-gradient">reimagined</span>.
+                        </h1>
+                        <p class="cymed-hero-subtitle">
+                            Streamline patient care, clinical workflows, billing, and operations in one unified, secure platform. Built for hospitals, clinics, and healthcare networks.
+                        </p>
+                        <div class="cymed-hero-cta">
+                            <a href="/request-demo" class="cymed-btn cymed-btn-primary cymed-btn-lg">
+                                Request a Demo
+                                <span class="cymed-btn-arrow">→</span>
+                            </a>
+                            <a href="/web/login" class="cymed-btn cymed-btn-ghost cymed-btn-lg">Sign In</a>
+                        </div>
+                        <div class="cymed-hero-trust">
+                            <div class="cymed-trust-item">
+                                <span class="cymed-trust-icon">🛡</span>
+                                <span>ISO 27001</span>
+                            </div>
+                            <div class="cymed-trust-item">
+                                <span class="cymed-trust-icon">🏥</span>
+                                <span>HIPAA Ready</span>
+                            </div>
+                            <div class="cymed-trust-item">
+                                <span class="cymed-trust-icon">🇪🇺</span>
+                                <span>GDPR Compliant</span>
+                            </div>
+                            <div class="cymed-trust-item">
+                                <span class="cymed-trust-icon">✓</span>
+                                <span>eGov Certified</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cymed-hero-visual">
+                        <div class="cymed-hero-card">
+                            <div class="cymed-card-header">
+                                <div class="cymed-card-dots">
+                                    <span/><span/><span/>
+                                </div>
+                                <span class="cymed-card-title">Patient Command Center</span>
+                            </div>
+                            <div class="cymed-card-body">
+                                <div class="cymed-stat-grid">
+                                    <div class="cymed-stat">
+                                        <div class="cymed-stat-value">284</div>
+                                        <div class="cymed-stat-label">Active Patients</div>
+                                    </div>
+                                    <div class="cymed-stat">
+                                        <div class="cymed-stat-value">47</div>
+                                        <div class="cymed-stat-label">Today's Appointments</div>
+                                    </div>
+                                    <div class="cymed-stat">
+                                        <div class="cymed-stat-value">98.7%</div>
+                                        <div class="cymed-stat-label">SLA Compliance</div>
+                                    </div>
+                                    <div class="cymed-stat cymed-stat-accent">
+                                        <div class="cymed-stat-value">SAR 4.2M</div>
+                                        <div class="cymed-stat-label">Revenue MTD</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Value Propositions ───────────────────────────────────────── -->
+            <section id="features" class="cymed-section">
+                <div class="cymed-container">
+                    <div class="cymed-section-head">
+                        <span class="cymed-eyebrow">Platform</span>
+                        <h2 class="cymed-section-title">Everything healthcare operations need</h2>
+                        <p class="cymed-section-subtitle">Six core capabilities, one unified platform. No bolt-ons, no integrations to maintain.</p>
+                    </div>
+                    <div class="cymed-feature-grid">
+                        <div class="cymed-feature">
+                            <div class="cymed-feature-icon" data-color="primary">👤</div>
+                            <h3>Patient Management</h3>
+                            <p>Centralized patient records, history, demographics, and care timelines — fully indexed and HIPAA-encrypted.</p>
+                        </div>
+                        <div class="cymed-feature">
+                            <div class="cymed-feature-icon" data-color="accent">📅</div>
+                            <h3>Intelligent Scheduling</h3>
+                            <p>Resource-aware appointment booking with staff availability, room utilization, and waitlist automation.</p>
+                        </div>
+                        <div class="cymed-feature">
+                            <div class="cymed-feature-icon" data-color="success">💳</div>
+                            <h3>Billing &amp; Revenue Cycle</h3>
+                            <p>Automated patient invoicing, insurance claims, ZATCA e-invoicing, and reconciliation in one flow.</p>
+                        </div>
+                        <div class="cymed-feature">
+                            <div class="cymed-feature-icon" data-color="primary">📋</div>
+                            <h3>Electronic Medical Records</h3>
+                            <p>Compliant EHR with SOAP notes, prescriptions, lab orders, and full clinical audit trail.</p>
+                        </div>
+                        <div class="cymed-feature">
+                            <div class="cymed-feature-icon" data-color="accent">👨‍⚕️</div>
+                            <h3>Staff &amp; Roster Management</h3>
+                            <p>Role-based access, duty rosters, payroll integration, and credentialing — all in one dashboard.</p>
+                        </div>
+                        <div class="cymed-feature">
+                            <div class="cymed-feature-icon" data-color="success">📊</div>
+                            <h3>Real-Time Analytics</h3>
+                            <p>Executive dashboards, operational KPIs, financial reports, and clinical quality metrics live.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Security &amp; Compliance ──────────────────────────────────── -->
+            <section id="security" class="cymed-section cymed-section-dark">
+                <div class="cymed-container">
+                    <div class="cymed-section-head">
+                        <span class="cymed-eyebrow cymed-eyebrow-light">Security</span>
+                        <h2 class="cymed-section-title cymed-text-light">Built for the healthcare threat landscape</h2>
+                        <p class="cymed-section-subtitle cymed-text-light-dim">Enterprise-grade security at every layer. Continuously audited. Always compliant.</p>
+                    </div>
+                    <div class="cymed-security-grid">
+                        <div class="cymed-security-card">
+                            <h3>🔐 Encryption Everywhere</h3>
+                            <p>AES-256 at rest, TLS 1.3 in transit. Patient PHI is encrypted at field level using envelope encryption with HSM-backed key management.</p>
+                        </div>
+                        <div class="cymed-security-card">
+                            <h3>🛡 Zero-Trust Architecture</h3>
+                            <p>Multi-factor authentication, fine-grained RBAC, session timeouts, and continuous identity verification on every request.</p>
+                        </div>
+                        <div class="cymed-security-card">
+                            <h3>📜 Compliance-First</h3>
+                            <p>HIPAA, GDPR, ISO 27001, NIST CSF, OWASP ASVS Level 2. Built-in audit trails, breach notification, and data subject rights workflows.</p>
+                        </div>
+                        <div class="cymed-security-card">
+                            <h3>👁 Continuous Monitoring</h3>
+                            <p>Real-time threat detection, SIEM integration, anomaly detection on PHI access, and automated incident response runbooks.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Testimonials ─────────────────────────────────────────────── -->
+            <section id="testimonials" class="cymed-section">
+                <div class="cymed-container">
+                    <div class="cymed-section-head">
+                        <span class="cymed-eyebrow">Customers</span>
+                        <h2 class="cymed-section-title">Trusted by healthcare leaders</h2>
+                    </div>
+                    <div class="cymed-testimonial-grid">
+                        <div class="cymed-testimonial">
+                            <p class="cymed-testimonial-quote">"CyMed cut our claims rejection rate by 64% in the first quarter. The unified billing-clinical-inventory workflow is transformational."</p>
+                            <div class="cymed-testimonial-author">
+                                <div class="cymed-avatar">DR</div>
+                                <div>
+                                    <div class="cymed-author-name">Dr. Reem Al-Saud</div>
+                                    <div class="cymed-author-role">CMO, King Faisal Healthcare Network</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cymed-testimonial">
+                            <p class="cymed-testimonial-quote">"The Saudi-specific localization — ZATCA, GOSI, WPS, NPHIES — meant we deployed in three weeks, not nine months."</p>
+                            <div class="cymed-testimonial-author">
+                                <div class="cymed-avatar">AK</div>
+                                <div>
+                                    <div class="cymed-author-name">Ahmad Al-Khalifa</div>
+                                    <div class="cymed-author-role">CFO, Riyadh Specialty Hospital Group</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cymed-testimonial">
+                            <p class="cymed-testimonial-quote">"Security posture moved from a yearly headache to a non-issue. The continuous audit trail is exactly what regulators ask for."</p>
+                            <div class="cymed-testimonial-author">
+                                <div class="cymed-avatar">SM</div>
+                                <div>
+                                    <div class="cymed-author-name">Sarah Al-Mansour</div>
+                                    <div class="cymed-author-role">CISO, MedTech Arabia</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Pricing ──────────────────────────────────────────────────── -->
+            <section id="pricing" class="cymed-section cymed-section-muted">
+                <div class="cymed-container">
+                    <div class="cymed-section-head">
+                        <span class="cymed-eyebrow">Pricing</span>
+                        <h2 class="cymed-section-title">Plans that scale with your operation</h2>
+                    </div>
+                    <div class="cymed-pricing-grid">
+                        <div class="cymed-price-card">
+                            <h3>Starter</h3>
+                            <div class="cymed-price">
+                                <span class="cymed-price-currency">SAR</span>
+                                <span class="cymed-price-amount">2,400</span>
+                                <span class="cymed-price-period">/month</span>
+                            </div>
+                            <p class="cymed-price-desc">Single-facility clinics and small practices.</p>
+                            <ul class="cymed-price-features">
+                                <li>Up to 5,000 patients</li>
+                                <li>10 concurrent users</li>
+                                <li>Core clinical + billing</li>
+                                <li>Email support</li>
+                                <li>Daily backups</li>
+                            </ul>
+                            <a href="/request-demo" class="cymed-btn cymed-btn-outline cymed-btn-block">Start Trial</a>
+                        </div>
+                        <div class="cymed-price-card cymed-price-card-featured">
+                            <span class="cymed-featured-badge">Recommended</span>
+                            <h3>Professional</h3>
+                            <div class="cymed-price">
+                                <span class="cymed-price-currency">SAR</span>
+                                <span class="cymed-price-amount">7,800</span>
+                                <span class="cymed-price-period">/month</span>
+                            </div>
+                            <p class="cymed-price-desc">Multi-department hospitals and clinic networks.</p>
+                            <ul class="cymed-price-features">
+                                <li>Unlimited patients</li>
+                                <li>50 concurrent users</li>
+                                <li>Full ERP + Clinical</li>
+                                <li>24/7 priority support</li>
+                                <li>NPHIES + ZATCA integration</li>
+                                <li>Custom dashboards</li>
+                                <li>HSM-backed encryption</li>
+                            </ul>
+                            <a href="/request-demo" class="cymed-btn cymed-btn-primary cymed-btn-block">Request Demo</a>
+                        </div>
+                        <div class="cymed-price-card">
+                            <h3>Enterprise</h3>
+                            <div class="cymed-price">
+                                <span class="cymed-price-amount-text">Custom</span>
+                            </div>
+                            <p class="cymed-price-desc">National healthcare networks and MOH deployments.</p>
+                            <ul class="cymed-price-features">
+                                <li>Unlimited everything</li>
+                                <li>Multi-facility deployment</li>
+                                <li>Dedicated success engineer</li>
+                                <li>On-premise option</li>
+                                <li>Custom integrations</li>
+                                <li>SLA &amp; uptime guarantees</li>
+                                <li>Annual penetration testing</li>
+                            </ul>
+                            <a href="/request-demo" class="cymed-btn cymed-btn-outline cymed-btn-block">Contact Sales</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── FAQ ──────────────────────────────────────────────────────── -->
+            <section id="faq" class="cymed-section">
+                <div class="cymed-container">
+                    <div class="cymed-section-head">
+                        <span class="cymed-eyebrow">FAQ</span>
+                        <h2 class="cymed-section-title">Common questions</h2>
+                    </div>
+                    <div class="cymed-faq">
+                        <details class="cymed-faq-item">
+                            <summary>How is CyMed different from generic ERPs?</summary>
+                            <p>CyMed is purpose-built for healthcare. Patient records, clinical workflows, regulatory compliance (NPHIES, ZATCA, GOSI), and security controls are first-class — not afterthought modules.</p>
+                        </details>
+                        <details class="cymed-faq-item">
+                            <summary>How long does implementation take?</summary>
+                            <p>Single-facility clinics: 2-4 weeks. Multi-facility hospitals: 6-12 weeks. We provide guided setup wizards that reduce traditional ERP implementation effort by 80%.</p>
+                        </details>
+                        <details class="cymed-faq-item">
+                            <summary>What about data sovereignty?</summary>
+                            <p>CyMed supports on-premise, private cloud, and sovereign cloud deployments. Patient data never leaves your jurisdiction unless you explicitly choose otherwise.</p>
+                        </details>
+                        <details class="cymed-faq-item">
+                            <summary>Do you integrate with existing systems?</summary>
+                            <p>Yes. CyMed exposes HL7 FHIR R5, OAuth 2.0, and REST APIs. We have prebuilt connectors for major LIS, RIS, PACS, and Saudi government systems.</p>
+                        </details>
+                        <details class="cymed-faq-item">
+                            <summary>What security certifications do you hold?</summary>
+                            <p>ISO 27001:2022, HIPAA, GDPR, OWASP ASVS Level 2, and Saudi NCA-ECC compliance. Annual third-party penetration testing reports are available under NDA.</p>
+                        </details>
+                        <details class="cymed-faq-item">
+                            <summary>Can we customize CyMed for our workflows?</summary>
+                            <p>Yes. CyMed includes Smart Setup Wizards that let department managers configure workflows without ERP consultants. Advanced customization is available via our extension API.</p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── CTA ──────────────────────────────────────────────────────── -->
+            <section class="cymed-cta-section">
+                <div class="cymed-container">
+                    <div class="cymed-cta-card">
+                        <h2>Ready to see CyMed in your facility?</h2>
+                        <p>Book a 30-minute demo with a healthcare implementation specialist.</p>
+                        <a href="/request-demo" class="cymed-btn cymed-btn-primary cymed-btn-lg">Request a Demo</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Footer ───────────────────────────────────────────────────── -->
+            <footer class="cymed-footer">
+                <div class="cymed-container">
+                    <div class="cymed-footer-grid">
+                        <div class="cymed-footer-brand">
+                            <div class="cymed-nav-brand">
+                                <span class="cymed-logo-mark">+</span>
+                                <span class="cymed-logo-text">CyMed</span>
+                            </div>
+                            <p>Enterprise Healthcare ERP, secured and ready for the next decade.</p>
+                        </div>
+                        <div class="cymed-footer-col">
+                            <h4>Platform</h4>
+                            <a href="#features">Features</a>
+                            <a href="#pricing">Pricing</a>
+                            <a href="#security">Security</a>
+                        </div>
+                        <div class="cymed-footer-col">
+                            <h4>Company</h4>
+                            <a href="/about">About</a>
+                            <a href="/blog">Insights</a>
+                            <a href="/careers">Careers</a>
+                        </div>
+                        <div class="cymed-footer-col">
+                            <h4>Resources</h4>
+                            <a href="/docs">Documentation</a>
+                            <a href="/support">Support</a>
+                            <a href="/status">System Status</a>
+                        </div>
+                        <div class="cymed-footer-col">
+                            <h4>Legal</h4>
+                            <a href="/privacy">Privacy Policy</a>
+                            <a href="/terms">Terms of Service</a>
+                            <a href="/security-policy">Security Policy</a>
+                        </div>
+                    </div>
+                    <div class="cymed-footer-bottom">
+                        <span>© 2026 CyMed Healthcare Systems. All rights reserved.</span>
+                        <div class="cymed-footer-social">
+                            <a href="#" aria-label="LinkedIn">in</a>
+                            <a href="#" aria-label="Twitter">𝕏</a>
+                            <a href="#" aria-label="GitHub">gh</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </t>
+    </template>
+
+    <!-- ── Demo Request Form ──────────────────────────────────────────────── -->
+    <template id="demo_request_form" name="CyMed Demo Request">
+        <t t-call="website.layout">
+            <div class="cymed-form-page">
+                <div class="cymed-container cymed-form-container">
+                    <h1>Request a Demo</h1>
+                    <p>See how CyMed handles your specific healthcare operations. We'll be in touch within 24 hours.</p>
+                    <form action="/submit-demo-request" method="post" class="cymed-form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="cymed-form-grid">
+                            <div class="cymed-form-field">
+                                <label>Your Name <span>*</span></label>
+                                <input type="text" name="name" required="required"/>
+                            </div>
+                            <div class="cymed-form-field">
+                                <label>Organization <span>*</span></label>
+                                <input type="text" name="organization" required="required"/>
+                            </div>
+                            <div class="cymed-form-field">
+                                <label>Work Email <span>*</span></label>
+                                <input type="email" name="email" required="required"/>
+                            </div>
+                            <div class="cymed-form-field">
+                                <label>Phone</label>
+                                <input type="tel" name="phone"/>
+                            </div>
+                            <div class="cymed-form-field cymed-form-field-full">
+                                <label>What would you like to see?</label>
+                                <textarea name="notes" rows="4" placeholder="Modules of interest, scale of operation, timeline..."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="cymed-btn cymed-btn-primary cymed-btn-lg">Send Request</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="demo_request_thanks" name="CyMed Demo Request Thanks">
+        <t t-call="website.layout">
+            <div class="cymed-thanks-page">
+                <div class="cymed-container">
+                    <h1>✓ Got it.</h1>
+                    <p>Thank you for your interest in CyMed. A healthcare specialist will reach out within 24 business hours.</p>
+                    <a href="/" class="cymed-btn cymed-btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

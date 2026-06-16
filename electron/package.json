@@ -1,0 +1,87 @@
+{
+  "name": "cymed-desktop",
+  "productName": "CyMed",
+  "version": "1.0.0",
+  "description": "CyMed Enterprise Healthcare ERP — Desktop Edition",
+  "main": "main.js",
+  "author": {
+    "name": "CyMed Healthcare Systems",
+    "email": "support@cy-com.com"
+  },
+  "license": "Proprietary",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:portable": "electron-builder --win portable",
+    "build:installer": "electron-builder --win nsis",
+    "build:dir": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "^32.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.0"
+  },
+  "build": {
+    "appId": "com.cymed.desktop",
+    "productName": "CyMed",
+    "copyright": "Copyright © 2026 CyMed Healthcare Systems",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "splash.html",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/cymed.ico",
+      "publisherName": "CyMed Healthcare Systems",
+      "verifyUpdateCodeSignature": false,
+      "artifactName": "CyMed-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "CyMed",
+      "installerIcon": "assets/cymed.ico",
+      "uninstallerIcon": "assets/cymed.ico",
+      "installerHeaderIcon": "assets/cymed.ico",
+      "license": "build/license.txt",
+      "deleteAppDataOnUninstall": false
+    },
+    "portable": {
+      "artifactName": "CyMed-Portable-${version}.${ext}"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "assets/cymed.icns",
+      "category": "public.app-category.medical"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "assets/cymed.png",
+      "category": "Office"
+    }
+  }
+}
