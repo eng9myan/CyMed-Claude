@@ -1,54 +1,58 @@
 "use client";
 import { useState } from "react";
-import { ShoppingCart, Truck, CheckCircle2, Clock, AlertTriangle, FileText, Package, TrendingDown } from "lucide-react";
+import { ShoppingCart, Truck, Clock, FileText, Loader2, CheckCircle2 } from "lucide-react";
+import { useERP, procurement } from "@/lib/erp";
 
-const KPIS = [
-  { label: "Open Requisitions", value: "18", sub: "Awaiting approval", icon: FileText, color: "from-blue-500 to-indigo-600" },
-  { label: "Active POs", value: "34", sub: "SAR 2.1M total value", icon: ShoppingCart, color: "from-orange-500 to-amber-600" },
-  { label: "Pending GRNs", value: "9", sub: "Awaiting receipt", icon: Truck, color: "from-purple-500 to-violet-600" },
-  { label: "Avg Lead Time", value: "4.2 days", sub: "Approved vendors", icon: Clock, color: "from-emerald-500 to-teal-600" },
-];
+interface PurchaseOrder {
+  id: number;
+  name: string;
+  partner_id?: [number, string];
+  date_order: string;
+  amount_total: number;
+  state: string;
+}
 
-const REQUISITIONS = [
-  { id: "PR-202606-A1B2C3", dept: "ICU", items: 6, total: 84500, date: "2026-06-14", status: "approved", urgency: "normal" },
-  { id: "PR-202606-D4E5F6", dept: "Pharmacy", items: 12, total: 210000, date: "2026-06-15", status: "submitted", urgency: "urgent" },
-  { id: "PR-202606-G7H8I9", dept: "Laboratory", items: 4, total: 32000, date: "2026-06-15", status: "draft", urgency: "normal" },
-  { id: "PR-202606-J1K2L3", dept: "Surgery", items: 8, total: 156000, date: "2026-06-13", status: "approved", urgency: "stat" },
-];
-
-const PURCHASE_ORDERS = [
-  { id: "PO-202606-XX1", vendor: "Al-Dawaa Medical Supplies", items: 6, total: 97175, date: "2026-06-14", delivery: "2026-06-18", status: "sent" },
-  { id: "PO-202606-XX2", vendor: "IQVIA Arabia", items: 12, total: 241500, date: "2026-06-15", delivery: "2026-06-20", status: "approved" },
-  { id: "PO-202606-XX3", vendor: "Integrated Gulf Biosystems", items: 4, total: 36800, date: "2026-06-13", delivery: "2026-06-17", status: "partial" },
-];
-
-const VENDORS = [
-  { name: "Al-Dawaa Medical Supplies", cr: "1010123456", score: 4.8, terms: "Net 30", status: "Approved" },
-  { name: "IQVIA Arabia", cr: "1010234567", score: 4.6, terms: "Net 45", status: "Approved" },
-  { name: "Integrated Gulf Biosystems", cr: "1010345678", score: 4.2, terms: "Net 30", status: "Approved" },
-  { name: "Medi Gulf Trading", cr: "1010456789", score: 3.9, terms: "Net 15", status: "Pending" },
-];
-
-const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-slate-700 text-slate-300",
-  submitted: "bg-blue-900/50 text-blue-400",
-  approved: "bg-emerald-900/50 text-emerald-400",
-  rejected: "bg-red-900/50 text-red-400",
-  sent: "bg-indigo-900/50 text-indigo-400",
-  partial: "bg-amber-900/50 text-amber-400",
-  received: "bg-emerald-900/50 text-emerald-400",
-};
-
-const URGENCY_COLORS: Record<string, string> = {
-  normal: "text-slate-400",
-  urgent: "text-amber-400",
-  stat: "text-red-400",
-};
+interface Vendor {
+  id: number;
+  name: string;
+  email?: string;
+  phone?: string;
+  vat?: string;
+  country_id?: [number, string];
+}
 
 const TABS = ["Requisitions", "Purchase Orders", "Vendors"];
 
+const STATE_COLORS: Record<string, string> = {
+  draft: "bg-slate-700 text-slate-300",
+  sent: "bg-blue-900/50 text-blue-400",
+  to_approve: "bg-amber-900/50 text-amber-400",
+  purchase: "bg-emerald-900/50 text-emerald-400",
+  done: "bg-emerald-900/50 text-emerald-400",
+  cancel: "bg-red-900/50 text-red-400",
+};
+
 export default function ProcurementPage() {
   const [tab, setTab] = useState(0);
+
+  const pos = useERP<PurchaseOrder[]>(() => procurement.purchaseOrders());
+  const vendors = useERP<Vendor[]>(() => procurement.vendors());
+
+  const draftPOs = (pos.data ?? []).filter(p => p.state === 'draft' || p.state === 'sent').length;
+  const activePOs = (pos.data ?? []).filter(p => p.state === 'purchase').length;
+  const totalValue = (pos.data ?? []).filter(p => p.state === 'purchase').reduce((s, p) => s + p.amount_total, 0);
+
+  const KPIS = [
+    { label: "Open Requisitions", value: String(draftPOs), sub: "Awaiting approval", icon: FileText, color: "from-blue-500 to-indigo-600" },
+    { label: "Active POs", value: String(activePOs), sub: `SAR ${(totalValue / 1e6).toFixed(1)}M total`, icon: ShoppingCart, color: "from-orange-500 to-amber-600" },
+    { label: "Pending GRNs", value: "—", sub: "Awaiting receipt", icon: Truck, color: "from-purple-500 to-violet-600" },
+    { label: "Active Vendors", value: String(vendors.data?.length ?? 0), sub: "Approved", icon: Clock, color: "from-emerald-500 to-teal-600" },
+  ];
+
+  const handleConfirm = async (id: number) => {
+    try { await procurement.confirmPO(id); await pos.refresh(); }
+    catch (e) { console.error(e); }
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white p-6">
@@ -59,7 +63,7 @@ export default function ProcurementPage() {
             <h1 className="text-2xl font-bold text-white">Procurement</h1>
             <p className="text-slate-400 text-sm mt-1">Requisitions · Purchase Orders · GRN · Vendors</p>
           </div>
-          <button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+          <button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
             <FileText className="w-4 h-4" /> New Requisition
           </button>
         </div>
@@ -80,114 +84,56 @@ export default function ProcurementPage() {
         <div className="flex gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
           {TABS.map((t, i) => (
             <button key={t} onClick={() => setTab(i)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === i ? "bg-orange-500 text-white" : "text-slate-400 hover:text-white"}`}>
-              {t}
-            </button>
+              className={`px-4 py-2 rounded-lg text-sm font-medium ${tab === i ? "bg-orange-500 text-white" : "text-slate-400 hover:text-white"}`}>{t}</button>
           ))}
         </div>
 
-        {tab === 0 && (
+        {(tab === 0 || tab === 1) && (
           <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-            <div className="p-4 border-b border-slate-800 font-semibold text-white">Purchase Requisitions</div>
-            <table className="w-full text-sm">
-              <thead className="bg-slate-800/50">
-                <tr className="text-xs text-slate-400 uppercase tracking-wider">
-                  <th className="text-left p-3">PR #</th>
-                  <th className="text-left p-3">Department</th>
-                  <th className="text-right p-3">Items</th>
-                  <th className="text-right p-3">Est. Value</th>
-                  <th className="text-left p-3">Date</th>
-                  <th className="text-left p-3">Status</th>
-                  <th className="text-left p-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800">
-                {REQUISITIONS.map((r) => (
-                  <tr key={r.id} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="p-3 text-xs font-mono text-slate-400">{r.id}</td>
-                    <td className="p-3">
-                      <span className="text-white">{r.dept}</span>
-                      <span className={`ml-2 text-xs font-medium ${URGENCY_COLORS[r.urgency]}`}>{r.urgency !== "normal" ? r.urgency.toUpperCase() : ""}</span>
-                    </td>
-                    <td className="p-3 text-right text-slate-300">{r.items}</td>
-                    <td className="p-3 text-right text-slate-300">SAR {r.total.toLocaleString()}</td>
-                    <td className="p-3 text-slate-400">{r.date}</td>
-                    <td className="p-3"><span className={`text-xs px-2 py-1 rounded-full ${STATUS_COLORS[r.status]}`}>{r.status}</span></td>
-                    <td className="p-3">
-                      {r.status === "submitted" && (
-                        <button className="text-xs px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Approve</button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {tab === 1 && (
-          <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-            <div className="p-4 border-b border-slate-800 font-semibold text-white">Purchase Orders</div>
-            <table className="w-full text-sm">
-              <thead className="bg-slate-800/50">
-                <tr className="text-xs text-slate-400 uppercase tracking-wider">
-                  <th className="text-left p-3">PO #</th>
-                  <th className="text-left p-3">Vendor</th>
-                  <th className="text-right p-3">Total (SAR)</th>
-                  <th className="text-left p-3">Order Date</th>
-                  <th className="text-left p-3">Delivery</th>
-                  <th className="text-left p-3">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800">
-                {PURCHASE_ORDERS.map((p) => (
-                  <tr key={p.id} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="p-3 text-xs font-mono text-slate-400">{p.id}</td>
-                    <td className="p-3 text-white">{p.vendor}</td>
-                    <td className="p-3 text-right text-slate-300">{p.total.toLocaleString()}</td>
-                    <td className="p-3 text-slate-400">{p.date}</td>
-                    <td className="p-3 text-slate-400">{p.delivery}</td>
-                    <td className="p-3"><span className={`text-xs px-2 py-1 rounded-full ${STATUS_COLORS[p.status]}`}>{p.status}</span></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="p-4 border-b border-slate-800 font-semibold text-white">{tab === 0 ? "Purchase Requisitions" : "Purchase Orders"}</div>
+            {pos.isLoading ? <div className="p-12 text-center text-slate-400"><Loader2 className="w-6 h-6 animate-spin mx-auto"/></div> : (
+              <table className="w-full text-sm">
+                <thead className="bg-slate-800/50 text-xs text-slate-400 uppercase">
+                  <tr><th className="text-left p-3">Reference</th><th className="text-left p-3">Vendor</th><th className="text-left p-3">Date</th><th className="text-right p-3">Total</th><th className="text-left p-3">Status</th><th className="text-left p-3">Action</th></tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {(pos.data ?? []).filter(p => tab === 0 ? ['draft', 'sent', 'to_approve'].includes(p.state) : p.state === 'purchase' || p.state === 'done').map((p) => (
+                    <tr key={p.id} className="hover:bg-slate-800/30">
+                      <td className="p-3 font-mono text-xs text-slate-400">{p.name}</td>
+                      <td className="p-3 text-white">{p.partner_id?.[1] ?? "—"}</td>
+                      <td className="p-3 text-slate-400">{p.date_order?.split(' ')[0]}</td>
+                      <td className="p-3 text-right text-slate-300">SAR {p.amount_total.toLocaleString()}</td>
+                      <td className="p-3"><span className={`text-xs px-2 py-1 rounded-full ${STATE_COLORS[p.state] ?? STATE_COLORS.draft}`}>{p.state}</span></td>
+                      <td className="p-3">{p.state === 'sent' || p.state === 'to_approve' ? <button onClick={() => handleConfirm(p.id)} className="text-xs px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg"><CheckCircle2 className="w-3 h-3 inline mr-1"/>Approve</button> : null}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 
         {tab === 2 && (
           <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
             <div className="p-4 border-b border-slate-800 font-semibold text-white">Approved Vendor List</div>
-            <table className="w-full text-sm">
-              <thead className="bg-slate-800/50">
-                <tr className="text-xs text-slate-400 uppercase tracking-wider">
-                  <th className="text-left p-3">Vendor</th>
-                  <th className="text-left p-3">CR Number</th>
-                  <th className="text-center p-3">Score</th>
-                  <th className="text-left p-3">Terms</th>
-                  <th className="text-left p-3">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800">
-                {VENDORS.map((v) => (
-                  <tr key={v.name} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="p-3 text-white font-medium">{v.name}</td>
-                    <td className="p-3 text-xs font-mono text-slate-400">{v.cr}</td>
-                    <td className="p-3 text-center">
-                      <span className={`text-sm font-bold ${v.score >= 4.5 ? "text-emerald-400" : v.score >= 4.0 ? "text-amber-400" : "text-red-400"}`}>
-                        {v.score}
-                      </span>
-                    </td>
-                    <td className="p-3 text-slate-300">{v.terms}</td>
-                    <td className="p-3">
-                      <span className={`text-xs px-2 py-1 rounded-full ${v.status === "Approved" ? "bg-emerald-900/50 text-emerald-400" : "bg-amber-900/50 text-amber-400"}`}>
-                        {v.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {vendors.isLoading ? <div className="p-12 text-center text-slate-400"><Loader2 className="w-6 h-6 animate-spin mx-auto"/></div> : (
+              <table className="w-full text-sm">
+                <thead className="bg-slate-800/50 text-xs text-slate-400 uppercase">
+                  <tr><th className="text-left p-3">Vendor</th><th className="text-left p-3">Email</th><th className="text-left p-3">Phone</th><th className="text-left p-3">VAT</th><th className="text-left p-3">Country</th></tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {(vendors.data ?? []).map((v) => (
+                    <tr key={v.id} className="hover:bg-slate-800/30">
+                      <td className="p-3 text-white font-medium">{v.name}</td>
+                      <td className="p-3 text-slate-400 text-xs">{v.email ?? "—"}</td>
+                      <td className="p-3 text-slate-400 text-xs">{v.phone ?? "—"}</td>
+                      <td className="p-3 font-mono text-xs text-slate-400">{v.vat ?? "—"}</td>
+                      <td className="p-3 text-slate-400">{v.country_id?.[1] ?? "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
       </div>

@@ -1,90 +1,137 @@
 "use client";
 import { useState } from "react";
-import { Plus, TrendingUp, DollarSign, Mail, Phone, Users } from "lucide-react";
+import { TrendingUp, DollarSign, Mail, Phone, Users, Loader2 } from "lucide-react";
+import { useERP, crm } from "@/lib/erp";
 
-function Card({ children, style={} }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.07)", borderRadius:16, ...style }}>{children}</div>;
+interface Lead {
+  id: number;
+  name: string;
+  partner_name?: string;
+  email_from?: string;
+  phone?: string;
+  expected_revenue: number;
+  stage_id?: [number, string];
+  user_id?: [number, string];
 }
 
-type Stage = "new" | "qualified" | "proposal" | "negotiation" | "won" | "lost";
-type Lead = { id:string; org:string; contact:string; product:string; value:number; stage:Stage; nextAction:string; };
+interface Opportunity {
+  id: number;
+  name: string;
+  partner_id?: [number, string];
+  expected_revenue: number;
+  probability: number;
+  stage_id?: [number, string];
+  date_deadline?: string;
+}
 
-const LEADS: Lead[] = [
-  { id:"L001", org:"King Saud Medical City",   contact:"Dr. Al-Rashed", product:"HMS Enterprise",      value:2400000, stage:"negotiation", nextAction:"Contract signature mtg Jun 18" },
-  { id:"L002", org:"Asir Hospital Network",     contact:"CFO Bin Salem", product:"Group Edition",       value:1840000, stage:"proposal",    nextAction:"Send revised quote" },
-  { id:"L003", org:"Royal Eye Hospital",       contact:"COO Al-Otaibi", product:"RIS + Tele-Ophth",     value:680000,  stage:"qualified",  nextAction:"Discovery call Jun 16" },
-  { id:"L004", org:"Al Noor Polyclinic Chain",  contact:"Manager Reem", product:"CMS Multi-Site",       value:380000,  stage:"new",         nextAction:"Send intro deck" },
-  { id:"L005", org:"Eastern Medical Lab Group", contact:"Director Hassan", product:"LIS Reference",     value:920000,  stage:"won",         nextAction:"Implementation kickoff Jun 20" },
-  { id:"L006", org:"Jeddah Health Network",     contact:"CIO Al-Ghamdi", product:"Patient Portal",      value:240000,  stage:"lost",         nextAction:"Lost — chose competitor" },
-];
-
-const STAGE_C: Record<Stage,{c:string;label:string}> = {
-  new:{c:"#94a3b8",label:"New"},
-  qualified:{c:"#22d3ee",label:"Qualified"},
-  proposal:{c:"#fbbf24",label:"Proposal"},
-  negotiation:{c:"#fb923c",label:"Negotiation"},
-  won:{c:"#4ade80",label:"Closed Won"},
-  lost:{c:"#f87171",label:"Lost"},
-};
+const TABS = ["Leads", "Opportunities"];
 
 export default function CRMPage() {
-  const [active, setActive] = useState<Lead>(LEADS[0]);
-  const pipeline = LEADS.filter(l=>!["won","lost"].includes(l.stage)).reduce((s,l)=>s+l.value,0);
-  const won = LEADS.filter(l=>l.stage==="won").reduce((s,l)=>s+l.value,0);
+  const [tab, setTab] = useState(0);
+
+  const leads = useERP<Lead[]>(() => crm.leads());
+  const opps = useERP<Opportunity[]>(() => crm.opportunities());
+
+  const pipeline = (opps.data ?? []).reduce((s, o) => s + (o.expected_revenue * (o.probability / 100)), 0);
+
+  const KPIS = [
+    { label: "Active Leads", value: String(leads.data?.length ?? 0), sub: "Top of funnel", icon: Users, color: "from-blue-500 to-indigo-600" },
+    { label: "Open Opportunities", value: String(opps.data?.length ?? 0), sub: "Pipeline", icon: TrendingUp, color: "from-orange-500 to-amber-600" },
+    { label: "Weighted Pipeline", value: `SAR ${(pipeline / 1e6).toFixed(2)}M`, sub: "Probability-adjusted", icon: DollarSign, color: "from-emerald-500 to-teal-600" },
+    { label: "Conversion Rate", value: "—", sub: "Coming soon", icon: TrendingUp, color: "from-purple-500 to-violet-600" },
+  ];
 
   return (
-    <div style={{ padding:24, minHeight:"100vh", background:"#080d18" }}>
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:20 }}>
-        <div>
-          <h1 style={{ fontSize:24, fontWeight:800, color:"#f1f5f9", margin:0 }}>CRM / Sales Pipeline</h1>
-          <p style={{ fontSize:12, color:"rgba(255,255,255,0.38)", marginTop:3 }}>Leads · Opportunities · Pipeline · Contacts · Activity tracking · Forecast</p>
+    <div className="min-h-screen bg-slate-950 text-white p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-white">Patient Relations / CRM</h1>
+            <p className="text-slate-400 text-sm mt-1">Leads · Opportunities · Outreach · Patient Engagement</p>
+          </div>
+          <button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+            <Users className="w-4 h-4" /> Add Lead
+          </button>
         </div>
-        <button style={{ background:"#e67e22", color:"white", border:"none", borderRadius:10, padding:"8px 18px", fontSize:13, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", gap:7 }}><Plus style={{ width:14, height:14 }}/>New Lead</button>
-      </div>
 
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10, marginBottom:18 }}>
-        <Card style={{ padding:"14px 18px" }}><p style={{ fontSize:11, color:"rgba(255,255,255,0.4)", margin:0 }}>Open Pipeline</p><p style={{ fontSize:22, fontWeight:800, color:"#22d3ee", margin:"4px 0 0" }}>SAR {(pipeline/1000000).toFixed(1)}M</p></Card>
-        <Card style={{ padding:"14px 18px" }}><p style={{ fontSize:11, color:"rgba(255,255,255,0.4)", margin:0 }}>Closed Won (Q)</p><p style={{ fontSize:22, fontWeight:800, color:"#4ade80", margin:"4px 0 0" }}>SAR {(won/1000000).toFixed(1)}M</p></Card>
-        <Card style={{ padding:"14px 18px" }}><p style={{ fontSize:11, color:"rgba(255,255,255,0.4)", margin:0 }}>Win Rate</p><p style={{ fontSize:22, fontWeight:800, color:"#a78bfa", margin:"4px 0 0" }}>34%</p></Card>
-        <Card style={{ padding:"14px 18px" }}><p style={{ fontSize:11, color:"rgba(255,255,255,0.4)", margin:0 }}>Active Leads</p><p style={{ fontSize:22, fontWeight:800, color:"#fbbf24", margin:"4px 0 0" }}>{LEADS.filter(l=>!["won","lost"].includes(l.stage)).length}</p></Card>
-      </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {KPIS.map((k) => (
+            <div key={k.label} className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+              <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${k.color} flex items-center justify-center mb-3`}>
+                <k.icon className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-white">{k.value}</div>
+              <div className="text-xs text-slate-400 mt-1">{k.label}</div>
+              <div className="text-xs text-slate-500 mt-0.5">{k.sub}</div>
+            </div>
+          ))}
+        </div>
 
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:8, marginBottom:14 }}>
-        {(Object.keys(STAGE_C) as Stage[]).map(s => {
-          const count = LEADS.filter(l=>l.stage===s).length;
-          const val = LEADS.filter(l=>l.stage===s).reduce((sum,l)=>sum+l.value,0);
-          return (
-            <Card key={s} style={{ padding:14, borderTop:`3px solid ${STAGE_C[s].c}` }}>
-              <p style={{ fontSize:10, color:STAGE_C[s].c, margin:0, textTransform:"uppercase", letterSpacing:"0.05em", fontWeight:700 }}>{STAGE_C[s].label}</p>
-              <p style={{ fontSize:20, color:"#f1f5f9", margin:"6px 0 2px", fontWeight:800 }}>{count}</p>
-              <p style={{ fontSize:10, color:"rgba(255,255,255,0.4)", margin:0 }}>SAR {(val/1000).toFixed(0)}K</p>
-            </Card>
-          );
-        })}
-      </div>
+        <div className="flex gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
+          {TABS.map((t, i) => (
+            <button key={t} onClick={() => setTab(i)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium ${tab === i ? "bg-orange-500 text-white" : "text-slate-400 hover:text-white"}`}>{t}</button>
+          ))}
+        </div>
 
-      <Card style={{ padding:0, overflow:"hidden" }}>
-        <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
-          <thead><tr style={{ fontSize:10, color:"rgba(255,255,255,0.4)", textTransform:"uppercase", letterSpacing:"0.05em" }}>
-            {["Lead","Organization","Product","Value","Stage","Next Action"].map(h => <th key={h} style={{ textAlign:"left", padding:"12px 14px" }}>{h}</th>)}
-          </tr></thead>
-          <tbody>
-            {LEADS.map(l => (
-              <tr key={l.id} onClick={()=>setActive(l)} style={{ borderTop:"1px solid rgba(255,255,255,0.04)", cursor:"pointer", background:active.id===l.id?"rgba(230,126,34,0.05)":"transparent" }}>
-                <td style={{ padding:"12px 14px" }}>
-                  <p style={{ fontSize:11, fontFamily:"monospace", color:"#22d3ee", margin:0 }}>{l.id}</p>
-                  <p style={{ fontSize:11, color:"rgba(255,255,255,0.55)", margin:"2px 0 0" }}>{l.contact}</p>
-                </td>
-                <td style={{ padding:"12px 14px", color:"#f1f5f9", fontWeight:700 }}>{l.org}</td>
-                <td style={{ padding:"12px 14px", color:"rgba(255,255,255,0.6)" }}>{l.product}</td>
-                <td style={{ padding:"12px 14px", color:"#4ade80", fontWeight:700 }}>SAR {(l.value/1000).toFixed(0)}K</td>
-                <td style={{ padding:"12px 14px" }}><span style={{ fontSize:10, background:`${STAGE_C[l.stage].c}18`, color:STAGE_C[l.stage].c, borderRadius:5, padding:"3px 9px", fontWeight:700, textTransform:"uppercase" }}>{STAGE_C[l.stage].label}</span></td>
-                <td style={{ padding:"12px 14px", color:"rgba(255,255,255,0.55)", fontSize:11 }}>{l.nextAction}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Card>
+        {tab === 0 && (
+          <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-slate-800 font-semibold text-white">Leads</div>
+            {leads.isLoading ? <div className="p-12 text-center text-slate-400"><Loader2 className="w-6 h-6 animate-spin mx-auto"/></div> : (
+              <table className="w-full text-sm">
+                <thead className="bg-slate-800/50 text-xs text-slate-400 uppercase">
+                  <tr><th className="text-left p-3">Name</th><th className="text-left p-3">Contact</th><th className="text-right p-3">Expected</th><th className="text-left p-3">Stage</th><th className="text-left p-3">Owner</th></tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {(leads.data ?? []).map((l) => (
+                    <tr key={l.id} className="hover:bg-slate-800/30">
+                      <td className="p-3">
+                        <div className="text-white font-medium">{l.name}</div>
+                        <div className="text-xs text-slate-500">{l.partner_name ?? "—"}</div>
+                      </td>
+                      <td className="p-3 text-xs">
+                        {l.email_from && <div className="flex items-center gap-1 text-slate-400"><Mail className="w-3 h-3"/>{l.email_from}</div>}
+                        {l.phone && <div className="flex items-center gap-1 text-slate-400 mt-1"><Phone className="w-3 h-3"/>{l.phone}</div>}
+                      </td>
+                      <td className="p-3 text-right text-emerald-400 font-medium">SAR {l.expected_revenue.toLocaleString()}</td>
+                      <td className="p-3 text-slate-300">{l.stage_id?.[1] ?? "—"}</td>
+                      <td className="p-3 text-slate-400 text-xs">{l.user_id?.[1] ?? "—"}</td>
+                    </tr>
+                  ))}
+                  {(leads.data ?? []).length === 0 && <tr><td colSpan={5} className="p-12 text-center text-slate-500">No leads yet</td></tr>}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
+        {tab === 1 && (
+          <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-slate-800 font-semibold text-white">Opportunities</div>
+            {opps.isLoading ? <div className="p-12 text-center text-slate-400"><Loader2 className="w-6 h-6 animate-spin mx-auto"/></div> : (
+              <table className="w-full text-sm">
+                <thead className="bg-slate-800/50 text-xs text-slate-400 uppercase">
+                  <tr><th className="text-left p-3">Opportunity</th><th className="text-left p-3">Partner</th><th className="text-right p-3">Revenue</th><th className="text-center p-3">Probability</th><th className="text-left p-3">Deadline</th></tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {(opps.data ?? []).map((o) => (
+                    <tr key={o.id} className="hover:bg-slate-800/30">
+                      <td className="p-3 text-white">{o.name}</td>
+                      <td className="p-3 text-slate-300">{o.partner_id?.[1] ?? "—"}</td>
+                      <td className="p-3 text-right text-emerald-400 font-medium">SAR {o.expected_revenue.toLocaleString()}</td>
+                      <td className="p-3 text-center">
+                        <span className="font-bold text-amber-400">{o.probability}%</span>
+                      </td>
+                      <td className="p-3 text-slate-400 text-xs">{o.date_deadline ?? "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
