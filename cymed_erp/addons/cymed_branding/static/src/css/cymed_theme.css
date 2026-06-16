@@ -1,0 +1,89 @@
+/* CyMed Dark Neural Theme — applies to ERP web client */
+:root {
+    --cymed-bg-deep:     #020617;
+    --cymed-bg-primary:  #0F172A;
+    --cymed-bg-surface:  #1E293B;
+    --cymed-bg-elevated: #334155;
+    --cymed-accent:      #E67E22;
+    --cymed-accent-hover:#F39C12;
+    --cymed-text:        #F8FAFC;
+    --cymed-text-muted:  #94A3B8;
+    --cymed-border:      #334155;
+    --cymed-success:     #10B981;
+    --cymed-danger:      #EF4444;
+    --cymed-warning:     #F59E0B;
+}
+
+body, .o_web_client, .o_action_manager, .o_main_navbar, .o_home_menu {
+    background-color: var(--cymed-bg-primary) !important;
+    color: var(--cymed-text) !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+.o_main_navbar {
+    background: var(--cymed-bg-deep) !important;
+    border-bottom: 1px solid var(--cymed-border) !important;
+    color: var(--cymed-text) !important;
+}
+.o_main_navbar .o_menu_brand,
+.o_main_navbar .o_menu_apps button {
+    color: var(--cymed-accent) !important;
+    font-weight: 600 !important;
+}
+.o_main_navbar .o_menu_brand::before {
+    content: "CyMed ERP";
+    color: var(--cymed-accent);
+}
+
+.btn-primary, .o_form_button_save, .btn.btn-primary {
+    background-color: var(--cymed-accent) !important;
+    border-color: var(--cymed-accent) !important;
+    color: white !important;
+}
+.btn-primary:hover { background-color: var(--cymed-accent-hover) !important; }
+
+.o_list_view, .o_kanban_view, .o_form_view, .o_searchview {
+    background-color: var(--cymed-bg-primary) !important;
+    color: var(--cymed-text) !important;
+}
+.o_list_view table thead {
+    background-color: var(--cymed-bg-surface) !important;
+}
+.o_list_view table tbody tr {
+    background-color: var(--cymed-bg-primary) !important;
+    border-bottom: 1px solid var(--cymed-border) !important;
+}
+.o_list_view table tbody tr:hover {
+    background-color: var(--cymed-bg-surface) !important;
+}
+
+.o_kanban_record, .o_form_sheet {
+    background-color: var(--cymed-bg-surface) !important;
+    border: 1px solid var(--cymed-border) !important;
+    border-radius: 8px !important;
+    color: var(--cymed-text) !important;
+}
+
+input, select, textarea, .o_input {
+    background-color: var(--cymed-bg-deep) !important;
+    border: 1px solid var(--cymed-border) !important;
+    color: var(--cymed-text) !important;
+    border-radius: 6px !important;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: var(--cymed-accent) !important;
+    box-shadow: 0 0 0 2px rgba(230,126,34,0.2) !important;
+}
+
+.o_searchview { background-color: var(--cymed-bg-surface) !important; }
+.o_cp_buttons .btn { color: var(--cymed-text) !important; }
+
+/* Hide branding leakage points */
+.o_loading_indicator,
+.dropdown-menu .o_user_menu_company_info,
+.o_main_navbar .o_menu_systray .o_user_menu .dropdown-item[data-menu="documentation"],
+.o_main_navbar .o_menu_systray .o_user_menu .dropdown-item[data-menu="support"],
+.o_main_navbar .o_menu_systray .o_user_menu .dropdown-item[data-menu="shortcuts"] {
+    display: none !important;
+}
+.o_user_menu .dropdown-item[data-menu="account"] { display: none !important; }

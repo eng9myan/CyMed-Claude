@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Override login page branding -->
+    <template id="cymed_login_layout" inherit_id="web.login_layout" name="CyMed Login Layout">
+        <xpath expr="//div[hasclass('o_database_list')]" position="replace">
+            <div class="text-center mt-3 cymed-footer">
+                <small class="text-muted">CyMed ERP — Healthcare Operations Platform</small>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="cymed_login_brand" inherit_id="web.login" name="CyMed Login Brand">
+        <xpath expr="//div[hasclass('o_login_image')]" position="attributes">
+            <attribute name="style">background-color:#0F172A;</attribute>
+        </xpath>
+        <xpath expr="//h2[1]" position="replace">
+            <h2 class="text-center mb-4" style="color:#E67E22;font-weight:600;">CyMed ERP</h2>
+            <p class="text-center text-muted mb-4">Healthcare Operations Platform</p>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,20 @@
+/* Hide any remaining vendor links/text in the web client */
+a[href*="odoo.com"],
+a[href*="www.odoo"],
+.o_powered_by,
+.o_navbar_apps_menu .o_apps_menu_opened .o_powered_by,
+.dropdown-item[href*="odoo"] {
+    display: none !important;
+}
+
+/* Replace any remaining "Odoo" text via CSS pseudo-elements where possible */
+.o_main_navbar .o_menu_brand[title="Home Menu"]::after {
+    content: "CyMed ERP";
+}
+
+/* CyMed branded loading screen */
+.o_loading_indicator::before {
+    content: "Loading CyMed ERP...";
+    color: var(--cymed-accent);
+    font-weight: 600;
+}

@@ -1,0 +1,32 @@
+body.o_database_list, body[class*="o_login"] {
+    background: linear-gradient(135deg, #020617 0%, #0F172A 50%, #1E293B 100%) !important;
+    color: #F8FAFC !important;
+    font-family: 'Inter', system-ui, sans-serif !important;
+    min-height: 100vh;
+}
+
+.o_login_form, .container, .card {
+    background-color: #1E293B !important;
+    color: #F8FAFC !important;
+    border: 1px solid #334155 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important;
+}
+
+.o_login_form .btn-primary, .btn-primary {
+    background: #E67E22 !important;
+    border-color: #E67E22 !important;
+    color: white !important;
+    font-weight: 600;
+}
+.o_login_form .btn-primary:hover { background: #F39C12 !important; }
+
+.o_login_form input {
+    background-color: #020617 !important;
+    border: 1px solid #334155 !important;
+    color: #F8FAFC !important;
+    border-radius: 6px !important;
+}
+.o_login_form label { color: #94A3B8 !important; }
+
+a[href*="odoo"], .text-muted a { display: none !important; }

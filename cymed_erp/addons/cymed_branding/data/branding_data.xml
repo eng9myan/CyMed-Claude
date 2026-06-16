@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Replace default company branding with CyMed -->
+        <record id="base.main_company" model="res.company">
+            <field name="name">CyMed Healthcare</field>
+            <field name="email">support@cy-com.com</field>
+            <field name="website">https://cy-com.com</field>
+            <field name="report_header">CyMed Healthcare Systems</field>
+            <field name="report_footer">Powered by CyMed ERP — All rights reserved</field>
+        </record>
+
+        <!-- System parameters to suppress vendor branding -->
+        <record id="cymed_brand_param_1" model="ir.config_parameter">
+            <field name="key">database.show_tips</field>
+            <field name="value">False</field>
+        </record>
+        <record id="cymed_brand_param_2" model="ir.config_parameter">
+            <field name="key">web.base.title</field>
+            <field name="value">CyMed ERP</field>
+        </record>
+        <record id="cymed_brand_param_3" model="ir.config_parameter">
+            <field name="key">database.enterprise_code</field>
+            <field name="value"></field>
+        </record>
+        <record id="cymed_brand_param_4" model="ir.config_parameter">
+            <field name="key">database.expiration_date</field>
+            <field name="value">2099-12-31</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,48 @@
+# CyMed Branding — English (US) translation overrides
+# This file rebrands all visible engine references to CyMed ERP.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: CyMed ERP 1.0\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Language-Team: CyMed Healthcare\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_US\n"
+
+msgid "Odoo"
+msgstr "CyMed ERP"
+
+msgid "Odoo.com"
+msgstr "cy-com.com"
+
+msgid "Powered by Odoo"
+msgstr "Powered by CyMed ERP"
+
+msgid "Powered by %s"
+msgstr "Powered by CyMed ERP"
+
+msgid "Odoo Apps"
+msgstr "CyMed Apps"
+
+msgid "Odoo Online"
+msgstr "CyMed Cloud"
+
+msgid "Odoo S.A."
+msgstr "CyMed Healthcare Systems"
+
+msgid "Try Odoo Online"
+msgstr "Try CyMed ERP"
+
+msgid "About Odoo"
+msgstr "About CyMed ERP"
+
+msgid "Odoo Server"
+msgstr "CyMed ERP Server"
+
+msgid "Documentation"
+msgstr "CyMed Documentation"
+
+msgid "Support"
+msgstr "CyMed Support"

@@ -1,0 +1,120 @@
+version: '3.8'
+
+# CyMed Full Stack — production-ready
+# Services: postgres, redis, cymed_erp (ERP engine), backend (Django clinical), frontend (Next.js), nginx
+
+services:
+
+  # ── Shared Postgres for all 3 databases ───────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cymed
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cymed_dev_password}
+      POSTGRES_DB: cymed_clinical
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cymed"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  # ── ERP Engine (forked from Odoo CE 19, fully rebranded) ────────────────────
+  cymed_erp:
+    build:
+      context: ./cymed_erp
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - HOST=db
+    volumes:
+      - cymed_erp_data:/var/lib/cymed_erp
+    expose:
+      - "8069"
+    command: >
+      python cymed-erp-bin
+      --addons-path=/opt/cymed_erp/cymed_erp_core/addons,/opt/cymed_erp/addons
+      --data-dir=/var/lib/cymed_erp
+      --db_host=db --db_port=5432
+      --db_user=cymed --db_password=${POSTGRES_PASSWORD:-cymed_dev_password}
+      --database=cymed_erp
+      --http-port=8069 --workers=2 --proxy-mode
+
+  # ── Django Clinical Backend ─────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./cymed_python
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://cymed:${POSTGRES_PASSWORD:-cymed_dev_password}@db:5432/cymed_clinical
+      - SECRET_KEY=${SECRET_KEY:-dev-only-change-in-production}
+      - DEBUG=False
+      - ALLOWED_HOSTS=*
+      - CORS_ALLOWED_ORIGINS=http://localhost:4000,https://cymed.cy-com.com
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - ERP_URL=http://cymed_erp:8069
+      - ERP_DB=cymed_erp
+    expose:
+      - "8000"
+    command: >
+      sh -c "python manage.py migrate --no-input &&
+             python manage.py collectstatic --no-input &&
+             gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 cymed_core.wsgi:application"
+    volumes:
+      - static_files:/app/static
+      - media_files:/app/media
+
+  # ── Next.js Frontend ────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost/api
+        - NEXT_PUBLIC_ERP_URL=http://localhost/erp
+        - NEXT_PUBLIC_ERP_DB=cymed_erp
+    restart: unless-stopped
+    depends_on:
+      - backend
+      - cymed_erp
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost/api
+      - NEXT_PUBLIC_ERP_URL=http://localhost/erp
+    expose:
+      - "3000"
+
+  # ── Nginx Reverse Proxy ─────────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/cymed-full.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_files:/app/static:ro
+      - media_files:/app/media:ro
+    depends_on:
+      - backend
+      - frontend
+      - cymed_erp
+
+volumes:
+  postgres_data:
+  cymed_erp_data:
+  static_files:
+  media_files:

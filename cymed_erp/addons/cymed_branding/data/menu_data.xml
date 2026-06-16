@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Hide modules that reveal underlying engine identity to end users -->
+        <record id="base.menu_administration" model="ir.ui.menu">
+            <field name="name">CyMed Administration</field>
+        </record>
+        <record id="base.menu_module_tree" model="ir.ui.menu">
+            <field name="name">CyMed Apps</field>
+        </record>
+    </data>
+</odoo>
