@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reagent,Reagent,model_cymed_lab_reagent,base.group_user,1,1,1,1
+access_reagent_lot,Reagent Lot In Use,model_cymed_lab_reagent_lot_inuse,base.group_user,1,1,1,0
+access_lab_test,Lab Test Code,model_cymed_lab_test_code,base.group_user,1,1,1,1
+access_qc_mat,QC Material,model_cymed_lab_qc_material,base.group_user,1,1,1,1
+access_qc_run,QC Run,model_cymed_lab_qc_run,base.group_user,1,1,1,0
+access_analyzer,Analyzer,model_cymed_lab_analyzer,base.group_user,1,1,1,1

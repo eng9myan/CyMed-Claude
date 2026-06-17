@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_kpi,Supply KPI,model_cymed_supply_kpi,base.group_user,1,0,0,0
+access_scorecard,Vendor Scorecard,model_cymed_vendor_scorecard,base.group_user,1,0,0,0

@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_drug_formulary_user,Drug Formulary User,model_cymed_drug_formulary,base.group_user,1,1,1,0
+access_drug_formulary_status,Formulary Status User,model_cymed_formulary_status,base.group_user,1,1,1,0
+access_drug_ingredient,Drug Ingredient User,model_cymed_drug_active_ingredient,base.group_user,1,1,1,1
+access_controlled_log,Controlled Substance Log,model_cymed_controlled_substance_log,base.group_user,1,1,1,0
+access_controlled_recon,Reconciliation,model_cymed_controlled_substance_reconciliation,base.group_user,1,1,1,0
+access_controlled_recon_line,Reconciliation Line,model_cymed_controlled_substance_reconciliation_line,base.group_user,1,1,1,1
+access_recall,Drug Recall,model_cymed_drug_recall,base.group_user,1,1,1,0
+access_par,Ward Par Level,model_cymed_ward_par_level,base.group_user,1,1,1,1
+access_replenish_run,Replenishment Run,model_cymed_ward_replenishment_run,base.group_user,1,1,1,0
+access_replenish_line,Replenishment Line,model_cymed_ward_replenishment_line,base.group_user,1,1,1,1

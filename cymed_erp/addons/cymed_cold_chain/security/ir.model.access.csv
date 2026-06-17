@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zone,Cold Zone,model_cymed_cold_zone,base.group_user,1,1,1,1
+access_temp,Temperature Reading,model_cymed_cold_temperature_reading,base.group_user,1,1,1,1
+access_excursion,Excursion,model_cymed_cold_excursion,base.group_user,1,1,1,0

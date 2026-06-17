@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_implant_cat,Implant Cat,model_cymed_implant_category,base.group_user,1,1,1,1
+access_implant,Implant,model_cymed_implant,base.group_user,1,1,1,0
+access_implant_place,Implant Placement,model_cymed_implant_placement,base.group_user,1,1,1,0
+access_proc,Surgical Procedure,model_cymed_surgical_procedure,base.group_user,1,1,1,1
+access_kit,Surgical Kit,model_cymed_surgical_kit,base.group_user,1,1,1,1
+access_kit_line,Kit Line,model_cymed_surgical_kit_line,base.group_user,1,1,1,1
+access_alloc,Kit Allocation,model_cymed_kit_allocation,base.group_user,1,1,1,0
+access_sterile,Sterilization Cycle,model_cymed_sterilization_cycle,base.group_user,1,1,1,0
+access_tray,Surgical Tray,model_cymed_surgical_tray,base.group_user,1,1,1,1
+access_autoclave,Autoclave,model_cymed_autoclave,base.group_user,1,1,1,1
+access_consume,Consumption,model_cymed_procedure_consumption,base.group_user,1,1,1,0
+access_consume_line,Consumption Line,model_cymed_procedure_consumption_line,base.group_user,1,1,1,1

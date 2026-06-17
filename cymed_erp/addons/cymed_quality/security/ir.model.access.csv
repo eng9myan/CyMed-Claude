@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_insp,Incoming Inspection,model_cymed_incoming_inspection,base.group_user,1,1,1,0
+access_insp_line,Inspection Line,model_cymed_incoming_inspection_line,base.group_user,1,1,1,1
+access_capa,CAPA,model_cymed_quality_capa,base.group_user,1,1,1,0
+access_ncr,NCR,model_cymed_quality_ncr,base.group_user,1,1,1,0
+access_dev,Deviation,model_cymed_quality_deviation,base.group_user,1,1,1,0
