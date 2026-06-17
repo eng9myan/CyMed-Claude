@@ -109,6 +109,12 @@ export function DemoShell({ persona, children }: { persona: Persona; children: R
 
         {/* Sidebar footer */}
         <div className="p-4 border-t border-slate-800 space-y-2">
+          {persona.id === 'hospital' && (
+            <Link href={`/demo/${persona.id}/journey`}
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-bold text-white transition-all hover:scale-[1.02] bg-gradient-to-r from-orange-500 to-amber-500">
+              🩺 Patient Journey Walkthrough
+            </Link>
+          )}
           <button onClick={() => { setTourOpen(true); setTourStep(0); }}
                   className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white transition-all hover:scale-[1.02]"
                   style={{ backgroundColor: persona.accentColor }}>

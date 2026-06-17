@@ -64,11 +64,16 @@ export default async function DemoLandingPage({ params }: { params: Promise<{ pe
             <p className="text-xl text-slate-300 leading-relaxed mb-10 max-w-2xl">
               {persona.heroSubhead}
             </p>
-            <div className="flex gap-4 mb-12">
+            <div className="flex gap-4 mb-12 flex-wrap">
               <Link href={`/demo/${persona.id}/workspace`} className="px-7 py-4 rounded-xl text-white font-bold text-base transition-all hover:scale-105"
                     style={{ backgroundColor: persona.accentColor, boxShadow: `0 10px 30px ${persona.accentColor}44` }}>
                 Start Interactive Demo →
               </Link>
+              {persona.id === 'hospital' && (
+                <Link href={`/demo/${persona.id}/journey`} className="px-7 py-4 rounded-xl text-white font-bold text-base transition-all hover:scale-105 bg-gradient-to-r from-amber-500 to-orange-500">
+                  🩺 Patient Journey Walkthrough
+                </Link>
+              )}
               <Link href="#features" className="px-7 py-4 rounded-xl font-bold text-base bg-white/5 hover:bg-white/10 border border-white/20 transition-all">
                 See Features
               </Link>
