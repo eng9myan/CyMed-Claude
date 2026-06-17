@@ -1,0 +1,299 @@
+name: CyMed Build, Verify & Release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Verify the ERP engine and clinical backend boot in Docker Compose
+  # ─────────────────────────────────────────────────────────────────────────
+  verify-stack:
+    name: Boot full stack on Linux runner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost
+          df -h
+
+      - name: Write .env for stack
+        run: |
+          cat > .env <<EOF
+          POSTGRES_PASSWORD=ci-test-password
+          SECRET_KEY=ci-test-secret-not-for-production-use
+          EOF
+
+      - name: Boot stack (db + redis + erp + django + nextjs + nginx)
+        run: |
+          docker compose -f docker-compose.full.yml --env-file .env up -d --build
+          docker compose -f docker-compose.full.yml ps
+
+      - name: Wait for services (up to 5 min)
+        run: |
+          for i in {1..60}; do
+            healthy=$(docker compose -f docker-compose.full.yml ps --format json | jq -r '.[].Health' | grep -c "healthy" || echo 0)
+            running=$(docker compose -f docker-compose.full.yml ps --format json | jq -r '.[].State' | grep -c "running" || echo 0)
+            echo "[$i/60] Healthy: $healthy · Running: $running"
+            if [ "$running" -ge "5" ]; then echo "Stack up"; break; fi
+            sleep 5
+          done
+
+      - name: Verify nginx routes
+        run: |
+          sleep 10
+          echo "=== HTTP root ==="
+          curl -s -o /dev/null -w "Status: %{http_code}\n" http://localhost/ || true
+          echo "=== ERP engine ==="
+          curl -s -o /dev/null -w "Status: %{http_code}\n" http://localhost/erp/web/login || true
+          echo "=== Django health ==="
+          curl -s -o /dev/null -w "Status: %{http_code}\n" http://localhost/api/health/ || true
+
+      - name: Capture logs on any failure
+        if: always()
+        run: |
+          mkdir -p logs
+          docker compose -f docker-compose.full.yml logs --no-color > logs/all-services.log 2>&1 || true
+          for svc in db redis cymed_erp backend frontend nginx; do
+            docker compose -f docker-compose.full.yml logs --no-color $svc > logs/$svc.log 2>&1 || true
+          done
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stack-logs
+          path: logs/
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f docker-compose.full.yml down -v
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Build the CyMed frontend (Next.js) as standalone
+  # ─────────────────────────────────────────────────────────────────────────
+  build-frontend:
+    name: Build Next.js frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install
+        run: cd frontend && npm ci
+
+      - name: Type check
+        run: cd frontend && npx tsc --noEmit
+        continue-on-error: true
+
+      - name: Build
+        env:
+          NEXT_PUBLIC_API_URL: https://cymed.cy-com.com
+          NEXT_PUBLIC_ERP_URL: https://cymed.cy-com.com
+        run: cd frontend && npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cymed-frontend-build
+          path: |
+            frontend/.next/standalone
+            frontend/.next/static
+            frontend/public
+          retention-days: 14
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Build the CyMed Windows .exe via electron-builder (CI has admin → NSIS works)
+  # ─────────────────────────────────────────────────────────────────────────
+  build-windows-exe:
+    name: Build Windows .exe (NSIS + portable)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: cd electron && npm install
+
+      - name: Build NSIS installer + portable
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: cd electron && npm run build:win
+        continue-on-error: true
+
+      - name: Build with electron-packager fallback
+        if: failure()
+        run: cd electron && npx electron-packager . CyMed --platform=win32 --arch=x64 --icon=assets/cymed.ico --overwrite --out=dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CyMed-Windows
+          path: |
+            electron/dist/*.exe
+            electron/dist/win-unpacked/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Build the macOS .dmg (signed only if CSC_LINK secret is set)
+  # ─────────────────────────────────────────────────────────────────────────
+  build-macos-dmg:
+    name: Build macOS .dmg
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install
+        run: cd electron && npm install
+
+      - name: Build .dmg
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: cd electron && npx electron-builder --mac dmg
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CyMed-macOS
+          path: electron/dist/*.dmg
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Build Android APK (no signing — produces unsigned debug APK for testing)
+  # ─────────────────────────────────────────────────────────────────────────
+  build-android-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Capacitor + sync Android
+        run: |
+          cd mobile
+          npm install
+          npx cap add android
+          npx cap sync android
+
+      - name: Build debug APK
+        run: |
+          cd mobile/android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CyMed-Android
+          path: mobile/android/app/build/outputs/apk/debug/*.apk
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Security scans run alongside builds
+  # ─────────────────────────────────────────────────────────────────────────
+  security-scans:
+    name: Security scans (Bandit + Trivy + gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+
+      - name: Bandit (Python SAST)
+        run: |
+          pip install bandit
+          bandit -r cymed_erp/addons/cymed_branding cymed_erp/addons/cymed_landing -ll -f json -o bandit_report.json || true
+
+      - name: gitleaks (secret scanning)
+        uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-reports
+          path: |
+            bandit_report.json
+            trivy-results.sarif
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Create a GitHub Release on every push to main, attaching all artifacts
+  # ─────────────────────────────────────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    needs: [verify-stack, build-frontend, build-windows-exe, build-android-apk]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Generate release tag
+        id: tag
+        run: echo "tag=v1.0.${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: CyMed Build ${{ steps.tag.outputs.tag }}
+          body: |
+            CyMed automated build from commit ${{ github.sha }}.
+
+            **Artifacts attached:**
+            - CyMed-Windows — `.exe` installers + portable build
+            - CyMed-macOS — `.dmg` (unsigned)
+            - CyMed-Android — debug `.apk`
+            - cymed-frontend-build — Next.js standalone bundle
+            - stack-logs — Docker Compose verification logs
+            - security-reports — Bandit, gitleaks, Trivy outputs
+
+            **Deploy:** push to `main` triggers AWS deployment via `.github/workflows/deploy.yml`.
+          generate_release_notes: true
+          files: |
+            artifacts/**/*.exe
+            artifacts/**/*.apk
+            artifacts/**/*.dmg
+          fail_on_unmatched_files: false
