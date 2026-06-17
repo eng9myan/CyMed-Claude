@@ -1,11 +1,13 @@
 "use client";
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { Persona } from '@/lib/demo/personas';
 import { DEMO_DATA } from '@/lib/demo/seedData';
+import { getERPData } from '@/lib/demo/erpSeedData';
 
 interface Props { persona: Persona; moduleId: string; }
 
 const TITLES: Record<string, string> = {
+  // Clinical / operational
   command_center: 'Executive Command Center',
   reception:      'Reception · Patient Check-In',
   admission:      'Patient Admission',
@@ -34,10 +36,32 @@ const TITLES: Record<string, string> = {
   ai:             'AI-Assisted Reading',
   dose:           'Radiation Dose Management',
   peerreview:     'Peer Review & QA',
+  // HR
+  hr:             'Employees',
+  attendance:     'Attendance & Time Tracking',
+  time_off:       'Time Off & Leave Management',
+  payroll:        'Payroll & GOSI',
+  recruitment:    'Recruitment Pipeline',
+  // Finance
+  accounting:     'Accounting · GL · Trial Balance',
+  expenses:       'Expense Reports',
+  banking:        'Bank Accounts & Reconciliation',
+  // Operations
+  procurement:    'Procurement · PR/PO/GRN',
+  assets:         'Fixed Assets & Maintenance',
+  pos_erp:        'Point of Sale (Front Desk)',
+  // Customer
+  marketing:      'Marketing Campaigns',
 };
 
 export function DemoModule({ persona, moduleId }: Props) {
-  const data = useMemo(() => DEMO_DATA[persona.id]?.[moduleId] ?? null, [persona.id, moduleId]);
+  const data = useMemo(() => {
+    // First look in persona-specific seed (clinical / operational modules)
+    const clinical = DEMO_DATA[persona.id]?.[moduleId];
+    if (clinical) return clinical;
+    // Otherwise fall back to shared ERP seed (HR, Payroll, Accounting, etc.)
+    return getERPData(persona.id, moduleId);
+  }, [persona.id, moduleId]);
   const title = TITLES[moduleId] ?? moduleId;
 
   return (

@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, X, Play, BookOpen, ExternalLink } from 'luci
 import type { Persona } from '@/lib/demo/personas';
 
 const MODULE_META: Record<string, { label: string; icon: string }> = {
+  // Clinical
   command_center: { label: 'Command Center', icon: '🎯' },
   reception:      { label: 'Reception',       icon: '🛎️' },
   admission:      { label: 'Admission',       icon: '🏥' },
@@ -13,27 +14,48 @@ const MODULE_META: Record<string, { label: string; icon: string }> = {
   doctor:         { label: 'Doctor',          icon: '🩺' },
   bed_board:      { label: 'Bed Board',       icon: '🛏️' },
   emar:           { label: 'eMAR',            icon: '💊' },
-  pharmacy:       { label: 'Pharmacy',        icon: '💊' },
+  pharmacy:       { label: 'Pharmacy Dept',   icon: '💊' },
   laboratory:     { label: 'Laboratory',      icon: '🧪' },
   radiology:      { label: 'Radiology',       icon: '📡' },
   'or-room':      { label: 'Operating Room',  icon: '⚕️' },
   icu:            { label: 'ICU',             icon: '❤️' },
-  billing:        { label: 'Billing',         icon: '💳' },
-  insurance:      { label: 'Insurance',       icon: '🏷️' },
   discharge:      { label: 'Discharge',       icon: '🚪' },
-  reporting:      { label: 'Reports',         icon: '📊' },
+  insurance:      { label: 'Insurance',       icon: '🏷️' },
   patient:        { label: 'Patients',        icon: '👥' },
   calendar:       { label: 'Calendar',        icon: '📅' },
   scheduling:     { label: 'Scheduling',      icon: '📆' },
-  inventory_mgmt: { label: 'Inventory',       icon: '📦' },
+  // Pharmacy ops
   compounding:    { label: 'Compounding',     icon: '🧬' },
-  pos:            { label: 'Point of Sale',   icon: '🔍' },
+  pos:            { label: 'POS Pharmacy',    icon: '🔍' },
+  // Lab ops
   lab:            { label: 'QC & Workflow',   icon: '🔬' },
   autoverify:     { label: 'Auto-Verify',     icon: '🤖' },
   microbiology:   { label: 'Microbiology',    icon: '🦠' },
+  // Radiology ops
   ai:             { label: 'AI Assist',       icon: '🧠' },
   dose:           { label: 'Dose Tracking',   icon: '☢️' },
   peerreview:     { label: 'Peer Review',     icon: '👥' },
+  // HR
+  hr:             { label: 'Employees',       icon: '👥' },
+  attendance:     { label: 'Attendance',      icon: '⏱' },
+  time_off:       { label: 'Time Off',        icon: '🌴' },
+  payroll:        { label: 'Payroll',         icon: '💸' },
+  recruitment:    { label: 'Recruitment',     icon: '🎯' },
+  // Finance
+  accounting:     { label: 'Accounting',      icon: '📒' },
+  billing:        { label: 'Billing',         icon: '💳' },
+  expenses:       { label: 'Expenses',        icon: '🧾' },
+  banking:        { label: 'Banking',         icon: '🏦' },
+  // Operations
+  inventory_mgmt: { label: 'Inventory',       icon: '📦' },
+  procurement:    { label: 'Procurement',     icon: '🛒' },
+  assets:         { label: 'Fixed Assets',    icon: '🏗️' },
+  pos_erp:        { label: 'POS Front Desk',  icon: '🧾' },
+  // Customer
+  crm:            { label: 'CRM',             icon: '🧠' },
+  marketing:      { label: 'Marketing',       icon: '📣' },
+  // Reports
+  reporting:      { label: 'Reports',         icon: '📊' },
 };
 
 export function DemoShell({ persona, children }: { persona: Persona; children: React.ReactNode }) {
@@ -59,23 +81,30 @@ export function DemoShell({ persona, children }: { persona: Persona; children: R
           </div>
         </Link>
 
-        <nav className="flex-1 overflow-y-auto py-3">
-          {persona.allowedModules.map((mod) => {
-            const meta = MODULE_META[mod] ?? { label: mod, icon: '•' };
-            const href = `/demo/${persona.id}/workspace/${mod}`;
-            const isActive = pathname === href;
-            return (
-              <Link key={mod} href={href} className={`mx-2 my-0.5 px-3 py-2 rounded-lg flex items-center gap-3 text-sm transition-all ${
-                isActive
-                  ? 'bg-slate-800 text-white font-semibold border-l-2'
-                  : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
-              }`}
-              style={isActive ? { borderColor: persona.accentColor } : {}}>
-                <span className="text-lg">{meta.icon}</span>
-                <span>{meta.label}</span>
-              </Link>
-            );
-          })}
+        <nav className="flex-1 overflow-y-auto py-2">
+          {persona.moduleGroups.map((group) => (
+            <div key={group.label} className="mb-3">
+              <div className="px-5 pt-3 pb-1 text-[10px] uppercase tracking-wider font-bold text-slate-500">
+                {group.label}
+              </div>
+              {group.modules.map((mod) => {
+                const meta = MODULE_META[mod] ?? { label: mod, icon: '•' };
+                const href = `/demo/${persona.id}/workspace/${mod}`;
+                const isActive = pathname === href;
+                return (
+                  <Link key={mod} href={href} className={`mx-2 my-0.5 px-3 py-1.5 rounded-lg flex items-center gap-3 text-sm transition-all ${
+                    isActive
+                      ? 'bg-slate-800 text-white font-semibold border-l-2'
+                      : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+                  }`}
+                  style={isActive ? { borderColor: persona.accentColor } : {}}>
+                    <span className="text-base flex-shrink-0">{meta.icon}</span>
+                    <span className="text-xs">{meta.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
 
         {/* Sidebar footer */}
@@ -95,7 +124,6 @@ export function DemoShell({ persona, children }: { persona: Persona; children: R
 
       {/* Main content */}
       <main className="flex-1 overflow-x-hidden">
-        {/* Demo banner */}
         <div className="px-6 py-2 text-xs font-semibold flex items-center justify-between border-b border-slate-800"
              style={{ backgroundColor: `${persona.accentColor}11`, borderColor: `${persona.accentColor}33` }}>
           <span className="flex items-center gap-2">
@@ -106,11 +134,9 @@ export function DemoShell({ persona, children }: { persona: Persona; children: R
             Ready to talk? sales@cy-com.com
           </a>
         </div>
-
         {children}
       </main>
 
-      {/* Guided Tour Overlay */}
       {tourOpen && currentTourStep && (
         <div className="fixed inset-0 z-50 flex items-end justify-center md:items-center md:justify-end p-4 pointer-events-none">
           <div className="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl max-w-md w-full p-6 pointer-events-auto"
@@ -132,11 +158,7 @@ export function DemoShell({ persona, children }: { persona: Persona; children: R
                 <X className="w-5 h-5" />
               </button>
             </div>
-
-            <p className="text-sm text-slate-300 leading-relaxed mb-5">
-              {currentTourStep.body}
-            </p>
-
+            <p className="text-sm text-slate-300 leading-relaxed mb-5">{currentTourStep.body}</p>
             <div className="flex items-center justify-between gap-3">
               <div className="flex gap-1">
                 {persona.tourSteps.map((_, i) => (
@@ -166,7 +188,6 @@ export function DemoShell({ persona, children }: { persona: Persona; children: R
                 )}
               </div>
             </div>
-
             <a href="mailto:sales@cy-com.com?subject=CyMed%20Demo%20Request"
                className="block mt-4 text-center text-xs text-slate-400 hover:text-white">
               Liked what you saw? Email sales@cy-com.com →

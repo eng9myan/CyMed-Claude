@@ -1,21 +1,21 @@
 /**
  * CyMed Demo Personas
  *
- * Each persona is a self-contained sales experience:
- *  - Tailored landing page (hero, features, testimonials)
- *  - Filtered workspace navigation (only their modules)
- *  - Persona-relevant seed data
- *  - 5-step scripted tour with arrows
- *
- * Prospects only ever see their persona's URL — they never know
- * the others exist. This is sales-grade tailoring at scale.
+ * Each persona shows its operational/clinical modules PLUS the full ERP backbone
+ * (HR, Payroll, Attendance, Time Off, Accounting, Inventory, POS, Procurement,
+ * Assets, CRM). Sidebar groups modules into "Operations", "ERP", and "Reports"
+ * sections for clarity.
  */
 
 export type PersonaId = 'hospital' | 'clinic' | 'pharmacy' | 'lab' | 'radiology';
 
+export interface ModuleGroup {
+  label: string;
+  modules: string[];
+}
+
 export interface Persona {
   id: PersonaId;
-  // Branding
   label: string;
   tagline: string;
   heroHeadline: string;
@@ -23,34 +23,52 @@ export interface Persona {
   accentColor: string;
   heroBgClass: string;
 
-  // Audience
   audience: string;
   audienceDescription: string;
 
-  // What they care about (KPIs in hero)
   heroStats: { value: string; label: string }[];
-
-  // What you show them
   features: { icon: string; title: string; description: string }[];
 
-  // Allow-list of modules they see in the workspace
-  allowedModules: string[];
+  // Modules grouped by section in the sidebar
+  moduleGroups: ModuleGroup[];
 
-  // Default landing route after they "log in" to the demo
   defaultRoute: string;
-
-  // Scripted tour steps (selector + content)
   tourSteps: { selector?: string; route: string; title: string; body: string }[];
 
-  // Testimonial relevant to this vertical
   testimonial: { quote: string; author: string; role: string; org: string };
-
-  // Pricing tier highlight
   recommendedPlan: 'Starter' | 'Professional' | 'Enterprise';
   priceFrom: string;
-
-  // Pain points this persona has
   painPoints: string[];
+}
+
+// Shared ERP modules — every persona gets these. Each will have persona-specific
+// seed data so the numbers reflect their scale and context.
+const FULL_ERP: ModuleGroup[] = [
+  {
+    label: 'Human Resources',
+    modules: ['hr', 'attendance', 'time_off', 'payroll', 'recruitment'],
+  },
+  {
+    label: 'Finance',
+    modules: ['accounting', 'billing', 'expenses', 'banking'],
+  },
+  {
+    label: 'Operations',
+    modules: ['inventory_mgmt', 'procurement', 'assets', 'pos_erp'],
+  },
+  {
+    label: 'Customer / Patient',
+    modules: ['crm', 'marketing'],
+  },
+  {
+    label: 'Reports',
+    modules: ['reporting'],
+  },
+];
+
+// Helper: flatten allowed modules
+function modulesFromGroups(groups: ModuleGroup[]): string[] {
+  return groups.flatMap((g) => g.modules);
 }
 
 export const PERSONAS: Record<PersonaId, Persona> = {
@@ -61,7 +79,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     label: 'Hospital',
     tagline: 'Multi-department healthcare operations',
     heroHeadline: 'Run your entire hospital from one screen.',
-    heroSubhead: 'Patient journey from ER triage to discharge billing — across every department, every shift, every regulator. One system. No integrations.',
+    heroSubhead: 'Patient journey from ER triage to discharge billing — plus the full ERP backbone: HR, payroll, attendance, accounting, inventory, procurement, and assets. One system, no integrations.',
     accentColor: '#E67E22',
     heroBgClass: 'from-slate-950 via-slate-900 to-orange-950',
     audience: 'Hospitals & Healthcare Networks',
@@ -73,29 +91,30 @@ export const PERSONAS: Record<PersonaId, Persona> = {
       { value: '0', label: 'Integrations to maintain' },
     ],
     features: [
-      { icon: '🏥', title: 'Patient Journey', description: 'Triage → admission → bed → doctor → orders → discharge in one timeline.' },
-      { icon: '🛏', title: 'Bed Management', description: 'Live occupancy, transfer workflows, housekeeping handoffs, isolation flags.' },
-      { icon: '⚕️', title: 'Clinical Workflows', description: 'EMR with SOAP, CPOE, eMAR, nursing flowsheets, surgical checklists.' },
-      { icon: '💊', title: 'Pharmacy & Labs', description: 'Internal departments wired in — no integration broker needed.' },
-      { icon: '💳', title: 'Revenue Cycle', description: 'NPHIES claims, ZATCA invoicing, AR aging, denials management.' },
-      { icon: '📊', title: 'Executive Command Center', description: 'Real-time KPIs by department: occupancy, revenue, staff, quality.' },
+      { icon: '🏥', title: 'Patient Journey',    description: 'Triage → admission → bed → doctor → orders → discharge in one timeline.' },
+      { icon: '👥', title: 'HR & Payroll',        description: 'Hundreds of staff, GOSI, WPS files, EOSB accruals, multi-grade structures.' },
+      { icon: '💳', title: 'Revenue Cycle',       description: 'NPHIES claims, ZATCA invoicing, AR aging, denials management.' },
+      { icon: '📦', title: 'Supply Chain',        description: 'Drug + consumable inventory with FEFO, vendor scorecards, automated POs.' },
+      { icon: '🏗', title: 'Fixed Assets',        description: 'Medical equipment register, depreciation, maintenance contracts, calibration tracking.' },
+      { icon: '📊', title: 'Executive Dashboards',description: 'C-suite KPIs: occupancy, revenue, staff, compliance — all real-time.' },
     ],
-    allowedModules: [
-      'command_center', 'reception', 'admission', 'nurse', 'doctor',
-      'bed_board', 'emar', 'pharmacy', 'laboratory', 'radiology',
-      'or-room', 'icu', 'billing', 'insurance', 'discharge',
-      'reporting', 'patient',
+    moduleGroups: [
+      {
+        label: 'Clinical',
+        modules: ['command_center', 'reception', 'admission', 'nurse', 'doctor', 'bed_board', 'emar', 'pharmacy', 'laboratory', 'radiology', 'or-room', 'icu', 'patient', 'discharge', 'insurance'],
+      },
+      ...FULL_ERP,
     ],
     defaultRoute: '/demo/hospital/workspace/command_center',
     tourSteps: [
-      { route: '/demo/hospital/workspace/command_center', title: 'Executive Command Center', body: 'Every KPI a CEO/CMO/CFO needs in one view: occupancy, revenue, staff on duty, quality alerts. Real-time, no overnight batch.' },
-      { route: '/demo/hospital/workspace/admission', title: 'Patient Admission', body: 'ER triage to bed assignment in one screen. Insurance eligibility checked in real-time against NPHIES.' },
-      { route: '/demo/hospital/workspace/bed_board', title: 'Bed Management Board', body: 'Drag-and-drop bed assignments, transfers, housekeeping status. Replaces your whiteboard.' },
-      { route: '/demo/hospital/workspace/doctor', title: 'Doctor Workstation', body: 'EMR, CPOE, prescriptions, lab orders — all from one chart. Voice-to-text SOAP notes built in.' },
-      { route: '/demo/hospital/workspace/billing', title: 'Revenue Cycle', body: 'Discharge auto-generates the invoice with NPHIES claim ready. ZATCA QR code on every bill.' },
+      { route: '/demo/hospital/workspace/command_center', title: 'Executive Command Center', body: 'Every KPI a CEO/CMO/CFO needs: occupancy, revenue, staff on duty, alerts. Real-time, no overnight batch.' },
+      { route: '/demo/hospital/workspace/admission',       title: 'Patient Journey',          body: 'ER triage to bed assignment in one screen. Insurance verified in real-time against NPHIES.' },
+      { route: '/demo/hospital/workspace/billing',         title: 'Revenue Cycle',            body: 'Discharge auto-generates the invoice with NPHIES claim ready. ZATCA QR code on every bill.' },
+      { route: '/demo/hospital/workspace/payroll',         title: 'Payroll & GOSI',           body: '284 staff payroll runs in 4 minutes. WPS file auto-generated. GOSI deductions handled.' },
+      { route: '/demo/hospital/workspace/assets',          title: 'Medical Equipment',        body: 'CT scanners, MRI, ventilators — all tracked. Maintenance contracts, calibration due dates, depreciation.' },
     ],
     testimonial: {
-      quote: 'We cut our claims rejection rate by 64% in the first quarter. The unified billing-clinical-inventory workflow is transformational.',
+      quote: 'We cut our claims rejection rate by 64% in the first quarter. The unified billing-clinical-payroll workflow is transformational.',
       author: 'Dr. Reem Al-Saud',
       role: 'CMO',
       org: 'King Faisal Healthcare Network',
@@ -103,8 +122,8 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     recommendedPlan: 'Enterprise',
     priceFrom: 'Custom — typically SAR 30K-180K/month',
     painPoints: [
-      'Separate HMS, ERP, payroll, and ZATCA systems',
-      'Insurance claims rejected for data mismatches',
+      'Separate HMS, ERP, payroll, and ZATCA systems with broken integrations',
+      'Insurance claims rejected for data mismatches between systems',
       'No real-time visibility for the C-suite',
       'Implementation projects that drag 18-24 months',
     ],
@@ -116,7 +135,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     label: 'Clinic',
     tagline: 'Outpatient and specialty clinics',
     heroHeadline: 'The clinic ERP that doesn\'t need an IT department.',
-    heroSubhead: 'Appointments, consultations, prescriptions, and ZATCA invoicing in a single, fast interface designed for clinic owner-doctors.',
+    heroSubhead: 'Appointments, consultations, prescriptions, billing, plus full back-office: HR, payroll, accounting, inventory. Built for clinic owner-doctors.',
     accentColor: '#10B981',
     heroBgClass: 'from-slate-950 via-emerald-950 to-slate-900',
     audience: 'Clinics & Specialty Practices',
@@ -125,30 +144,33 @@ export const PERSONAS: Record<PersonaId, Persona> = {
       { value: '2 min', label: 'Avg consult check-in' },
       { value: '+38%', label: 'Patient throughput' },
       { value: '2 wks', label: 'Time to live' },
-      { value: '0', label: 'Software needed at front desk' },
+      { value: 'SAR 0', label: 'Setup fees' },
     ],
     features: [
-      { icon: '📅', title: 'Smart Scheduling', description: 'Drag-and-drop appointments with online booking and SMS reminders.' },
-      { icon: '🩺', title: 'Quick Consultation', description: 'Streamlined SOAP form designed for 7-15 minute visits.' },
-      { icon: '💊', title: 'Digital Prescriptions', description: 'Drug interactions checked, sent to in-clinic or partnered pharmacy.' },
-      { icon: '💳', title: 'Instant Billing', description: 'ZATCA-compliant invoice generated in 1 click. Card + insurance + cash.' },
-      { icon: '👥', title: 'Patient Records', description: 'Full medical history at a glance. Search by name, MRN, phone, or condition.' },
-      { icon: '📈', title: 'Daily Insights', description: 'Today\'s revenue, no-show rate, top conditions, cash position.' },
+      { icon: '📅', title: 'Smart Scheduling',     description: 'Drag-and-drop appointments with online booking and SMS reminders.' },
+      { icon: '🩺', title: 'Quick Consultation',   description: 'Streamlined SOAP form designed for 7-15 minute visits.' },
+      { icon: '👥', title: 'HR & Payroll',         description: 'Staff records, attendance, leave, GOSI-ready payroll for clinics of any size.' },
+      { icon: '💳', title: 'Instant Billing',      description: 'ZATCA-compliant invoice in 1 click. Card + insurance + cash.' },
+      { icon: '📦', title: 'Inventory & Supplies', description: 'Track consumables, drugs in dispense, sample collection kits.' },
+      { icon: '📈', title: 'Daily Insights',       description: 'Today\'s revenue, no-show rate, top procedures, cash position.' },
     ],
-    allowedModules: [
-      'calendar', 'scheduling', 'reception', 'doctor', 'patient',
-      'billing', 'pharmacy', 'reporting',
+    moduleGroups: [
+      {
+        label: 'Clinical',
+        modules: ['calendar', 'scheduling', 'reception', 'doctor', 'patient', 'pharmacy'],
+      },
+      ...FULL_ERP,
     ],
     defaultRoute: '/demo/clinic/workspace/calendar',
     tourSteps: [
-      { route: '/demo/clinic/workspace/calendar', title: 'Today\'s Schedule', body: 'Drag to reschedule. Color-coded by visit type. SMS reminders sent automatically 24h before.' },
-      { route: '/demo/clinic/workspace/reception', title: 'Reception Check-In', body: 'Two-click check-in. Insurance eligibility verified in real-time before the consultation starts.' },
-      { route: '/demo/clinic/workspace/doctor', title: 'Quick Consultation', body: 'Vital signs auto-populated from triage. SOAP note via voice-to-text. Add ICD-11 diagnosis from search.' },
-      { route: '/demo/clinic/workspace/pharmacy', title: 'Send Prescription', body: 'Drug interaction check happens as you type. Send to in-clinic pharmacy or partnered network.' },
-      { route: '/demo/clinic/workspace/billing', title: 'One-Click Invoice', body: 'All services from the visit pre-populated. Press Confirm — ZATCA QR generated, invoice printed.' },
+      { route: '/demo/clinic/workspace/calendar',  title: 'Today\'s Schedule',      body: 'Drag to reschedule. Color-coded by visit type. SMS reminders sent automatically.' },
+      { route: '/demo/clinic/workspace/doctor',    title: 'Quick Consultation',     body: 'SOAP via voice-to-text. ICD-11 search. Prescriptions auto-checked for interactions.' },
+      { route: '/demo/clinic/workspace/billing',   title: 'One-Click Invoice',      body: 'All services pre-populated. Press Confirm — ZATCA QR generated, invoice printed.' },
+      { route: '/demo/clinic/workspace/hr',        title: 'Your Team',              body: 'Doctors, nurses, receptionists in one roster. Attendance, leave, payroll all linked.' },
+      { route: '/demo/clinic/workspace/accounting',title: 'Cash Position',          body: 'Daily cash drawer reconciliation. Monthly P&L without an accountant.' },
     ],
     testimonial: {
-      quote: 'I switched from three different apps to CyMed and saw 38% more patients per day. My reception staff was up and running by lunch.',
+      quote: 'I switched from three different apps to CyMed and saw 38% more patients per day. My receptionist was up and running by lunch.',
       author: 'Dr. Hassan Al-Qahtani',
       role: 'Owner',
       org: 'Dermatology & Aesthetic Clinic, Jeddah',
@@ -169,11 +191,10 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     label: 'Pharmacy',
     tagline: 'Retail and chain pharmacies',
     heroHeadline: 'Pharmacy ERP built for Saudi compliance — out of the box.',
-    heroSubhead: 'POS, FEFO inventory, NPHIES insurance, SFDA tracking, multi-branch consolidation. Every requirement, pre-built.',
+    heroSubhead: 'POS, FEFO inventory, NPHIES insurance, SFDA tracking, multi-branch consolidation — plus full HR, payroll, accounting. Every requirement, pre-built.',
     accentColor: '#3B82F6',
     heroBgClass: 'from-slate-950 via-blue-950 to-slate-900',
     audience: 'Pharmacies & Pharmacy Chains',
-    audience_description: 'Single shops to 200+ branch chains, retail and hospital pharmacies',
     audienceDescription: 'Single shops to 200+ branch chains, retail and hospital pharmacies',
     heroStats: [
       { value: '< 1s', label: 'Barcode to invoice' },
@@ -182,27 +203,30 @@ export const PERSONAS: Record<PersonaId, Persona> = {
       { value: '24/7', label: 'NPHIES + SFDA integration' },
     ],
     features: [
-      { icon: '🔍', title: 'Point of Sale', description: 'Barcode scan → drug info → eligibility check → dispense in under 30 seconds.' },
-      { icon: '📦', title: 'FEFO Inventory', description: 'First-Expired-First-Out picking enforced. Cold chain temperature monitoring built in.' },
-      { icon: '🏥', title: 'Insurance & NPHIES', description: 'Real-time eligibility, claims submission, denials workflow — all standard.' },
-      { icon: '🧪', title: 'Compounding', description: 'Recipe management, batch records, sterile/non-sterile workflows.' },
-      { icon: '🌐', title: 'Multi-Branch', description: 'Stock transfers between branches, consolidated reporting, per-branch P&L.' },
-      { icon: '📊', title: 'Owner Dashboard', description: 'Today\'s revenue across all branches, top SKUs, slow movers, expiry warnings.' },
+      { icon: '🔍', title: 'Point of Sale',     description: 'Barcode scan → drug info → eligibility check → dispense in 30 seconds.' },
+      { icon: '📦', title: 'FEFO Inventory',    description: 'First-Expired-First-Out enforced. Cold chain temperature monitoring.' },
+      { icon: '🏥', title: 'Insurance & NPHIES',description: 'Real-time eligibility, claims submission, denials workflow.' },
+      { icon: '👥', title: 'HR & Payroll',      description: 'Pharmacists, technicians, attendance, leave, multi-branch payroll.' },
+      { icon: '🌐', title: 'Multi-Branch',      description: 'Stock transfers, consolidated reporting, per-branch P&L.' },
+      { icon: '📊', title: 'Owner Dashboard',   description: 'Today\'s revenue across branches, top SKUs, slow movers, expiry warnings.' },
     ],
-    allowedModules: [
-      'pharmacy', 'inventory_mgmt', 'compounding', 'pos',
-      'insurance', 'reporting', 'patient',
+    moduleGroups: [
+      {
+        label: 'Pharmacy Operations',
+        modules: ['pos', 'pharmacy', 'compounding', 'insurance', 'patient'],
+      },
+      ...FULL_ERP,
     ],
     defaultRoute: '/demo/pharmacy/workspace/pos',
     tourSteps: [
-      { route: '/demo/pharmacy/workspace/pos', title: 'Pharmacy POS', body: 'Scan a barcode, system pulls drug info, runs interaction check, validates the prescription, processes the sale.' },
-      { route: '/demo/pharmacy/workspace/inventory_mgmt', title: 'FEFO Inventory', body: 'Real stock per batch with expiry dates. Picking suggests oldest-first. Alerts for near-expiry.' },
-      { route: '/demo/pharmacy/workspace/compounding', title: 'Compounding Workflow', body: 'Recipe-based with weight verification, batch records, and sterility tracking for IV/eye preparations.' },
-      { route: '/demo/pharmacy/workspace/insurance', title: 'NPHIES Real-Time', body: 'Patient walks in — eligibility verified in 1 second. Claim submitted at point of dispense. Denials routed for resubmit.' },
-      { route: '/demo/pharmacy/workspace/reporting', title: 'Multi-Branch View', body: 'See all your branches at once: today\'s revenue, top drugs, slow movers, expiry exposure.' },
+      { route: '/demo/pharmacy/workspace/pos',          title: 'Pharmacy POS',          body: 'Scan a barcode. Drug info loads, interaction check runs, sale processed in seconds.' },
+      { route: '/demo/pharmacy/workspace/inventory_mgmt', title: 'FEFO Inventory',     body: 'Real stock per batch with expiry. Picking suggests oldest-first. Near-expiry alerts.' },
+      { route: '/demo/pharmacy/workspace/insurance',     title: 'NPHIES Real-Time',    body: 'Patient walks in — eligibility verified in 1 second. Claim submitted at point of dispense.' },
+      { route: '/demo/pharmacy/workspace/payroll',       title: 'Pharmacist Payroll',  body: 'Multi-branch payroll across all locations. GOSI, WPS, EOSB — all handled.' },
+      { route: '/demo/pharmacy/workspace/accounting',    title: 'Multi-Branch P&L',    body: 'Each branch as a profit center. Consolidated GL. Daily cash position by store.' },
     ],
     testimonial: {
-      quote: 'Our insurance rejection rate dropped from 18% to 0.6% within 60 days. CyMed handles NPHIES exactly the way it should work.',
+      quote: 'Our insurance rejection rate dropped from 18% to 0.6% within 60 days. And we finally have one HR + payroll system across all 32 branches.',
       author: 'Ahmad Al-Khalifa',
       role: 'Operations Director',
       org: 'Al-Nahdi Pharmacies (32 branches)',
@@ -212,7 +236,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     painPoints: [
       'Manual expiry tracking → expired drugs dispensed → fines',
       'Insurance rejections costing 10-20% of revenue',
-      'No consolidated view across branches',
+      'HR and payroll spread across multiple branches in spreadsheets',
       'Compounding records on paper — SFDA audit nightmare',
     ],
   },
@@ -222,8 +246,8 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     id: 'lab',
     label: 'Laboratory',
     tagline: 'Diagnostic and reference laboratories',
-    heroHeadline: 'Lab LIS that actually runs your operation.',
-    heroSubhead: 'Sample tracking, auto-verification, QC, analyzer integration, and patient result delivery — purpose-built for diagnostic labs.',
+    heroHeadline: 'Lab LIS + ERP that actually runs your operation.',
+    heroSubhead: 'Sample tracking, auto-verification, QC, analyzer integration, patient result delivery — plus full HR, payroll, inventory, and asset management built in.',
     accentColor: '#8B5CF6',
     heroBgClass: 'from-slate-950 via-purple-950 to-slate-900',
     audience: 'Diagnostic & Reference Labs',
@@ -235,27 +259,30 @@ export const PERSONAS: Record<PersonaId, Persona> = {
       { value: '0', label: 'Manual transcription errors' },
     ],
     features: [
-      { icon: '🧪', title: 'Sample Workflow', description: 'Barcode tracking from collection to disposal. Aliquot routing, chain of custody, batch loading.' },
-      { icon: '🤖', title: 'Auto-Verification', description: 'Delta checks, reference ranges, instrument flags — rule-based release without tech touching it.' },
-      { icon: '📊', title: 'Quality Control', description: 'Levey-Jennings charts, Westgard rules, CV tracking. CAP-grade documentation.' },
-      { icon: '🔌', title: 'Analyzer Integration', description: 'HL7 ASTM bidirectional — Roche, Abbott, Sysmex, Beckman, Mindray, all pre-built.' },
-      { icon: '👥', title: 'Patient Portal', description: 'Results delivered to patients securely; doctors get push notifications.' },
-      { icon: '📈', title: 'Lab Analytics', description: 'Turnaround time, instrument utilization, repeat rate, revenue per test.' },
+      { icon: '🧪', title: 'Sample Workflow',     description: 'Barcode tracking from collection to disposal. Aliquot routing, chain of custody.' },
+      { icon: '🤖', title: 'Auto-Verification',   description: 'Delta checks, reference ranges, Westgard rules — rule-based release without tech touching.' },
+      { icon: '🔌', title: 'Analyzer Integration',description: 'HL7 ASTM bidirectional — Roche, Abbott, Sysmex, Beckman, all pre-built.' },
+      { icon: '🏗', title: 'Asset Management',    description: 'Track every analyzer: maintenance contracts, calibration, depreciation, lease vs own.' },
+      { icon: '👥', title: 'HR & Payroll',        description: 'Lab techs, phlebotomists, supervisors. Shift differentials, on-call, GOSI.' },
+      { icon: '📦', title: 'Reagent Inventory',   description: 'Lot-tracked reagents, expiry-aware, auto-reorder when batch sensitivity drops.' },
     ],
-    allowedModules: [
-      'laboratory', 'lab', 'autoverify', 'microbiology', 'patient',
-      'billing', 'reporting',
+    moduleGroups: [
+      {
+        label: 'Lab Operations',
+        modules: ['laboratory', 'autoverify', 'microbiology', 'lab', 'patient'],
+      },
+      ...FULL_ERP,
     ],
     defaultRoute: '/demo/lab/workspace/laboratory',
     tourSteps: [
-      { route: '/demo/lab/workspace/laboratory', title: 'Sample Queue', body: 'All accessioned samples in one view. Filter by priority, doctor, test type. Color-coded for STAT.' },
-      { route: '/demo/lab/workspace/autoverify', title: 'Auto-Verification Engine', body: 'Define rules per analyte. Delta checks, reference ranges, instrument flags applied automatically.' },
-      { route: '/demo/lab/workspace/microbiology', title: 'Microbiology Workflow', body: 'Specimen → culture → growth → ID → AST → MIC. Sensitivity report with antibiotic guidance.' },
-      { route: '/demo/lab/workspace/lab', title: 'Quality Control', body: 'Daily QC capture, Levey-Jennings charts auto-generated, Westgard rules trigger reruns.' },
-      { route: '/demo/lab/workspace/reporting', title: 'Operational Metrics', body: 'TAT by test, analyzer utilization, revenue per panel. Drill into any number.' },
+      { route: '/demo/lab/workspace/laboratory', title: 'Sample Queue',          body: 'Every sample in one view. Filter by priority, test, doctor. STAT highlighted.' },
+      { route: '/demo/lab/workspace/autoverify', title: 'Auto-Verification',     body: 'Define rules per analyte. Delta checks and ranges applied automatically.' },
+      { route: '/demo/lab/workspace/assets',     title: 'Analyzer Register',     body: 'Every analyzer tracked: contract value, calibration date, downtime hours.' },
+      { route: '/demo/lab/workspace/inventory_mgmt', title: 'Reagent Inventory', body: 'Lot-aware stock. Auto-PO when low. Cold chain monitoring for sensitive reagents.' },
+      { route: '/demo/lab/workspace/payroll',    title: 'Lab Tech Payroll',      body: 'Shift differentials (24/7 lab), on-call pay, supervisor bonuses — all in one run.' },
     ],
     testimonial: {
-      quote: 'CyMed cut our average TAT from 4.2 hours to 1.6 hours. Auto-verification handles 94% of results — our techs focus only on exceptions.',
+      quote: 'CyMed cut our TAT from 4.2 hours to 1.6 hours, and our HR person stopped spending Fridays on payroll Excel sheets.',
       author: 'Dr. Layla Al-Mutairi',
       role: 'Lab Director',
       org: 'Borg Diagnostic Centers',
@@ -264,9 +291,9 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     priceFrom: 'SAR 5,200/month',
     painPoints: [
       'Manual result entry from analyzers → transcription errors',
-      'QC tracked in Excel sheets — CAP/SCFHS audit risk',
-      'No analyzer integration; samples re-keyed multiple times',
-      'Doctors call to ask "where\'s my result?" all day',
+      'QC tracked in Excel — CAP/SCFHS audit risk',
+      'Reagent inventory rotating in/out without lot tracking',
+      'Multi-shift payroll calculated by hand every month',
     ],
   },
 
@@ -275,8 +302,8 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     id: 'radiology',
     label: 'Imaging Center',
     tagline: 'Radiology and diagnostic imaging',
-    heroHeadline: 'RIS, PACS, AI, and reporting — in one workstation.',
-    heroSubhead: 'Modality worklist, DICOM viewer, AI-assisted detection, voice-to-text reporting, and peer review. The radiologist\'s dream stack.',
+    heroHeadline: 'RIS, PACS, AI, ERP — in one workstation.',
+    heroSubhead: 'Modality worklist, DICOM viewer, AI-assisted detection, voice reporting — plus full ERP: HR, payroll, inventory, and asset management for million-riyal imaging equipment.',
     accentColor: '#EC4899',
     heroBgClass: 'from-slate-950 via-pink-950 to-slate-900',
     audience: 'Imaging Centers & Radiology Departments',
@@ -288,27 +315,30 @@ export const PERSONAS: Record<PersonaId, Persona> = {
       { value: '100%', label: 'DICOM compliance' },
     ],
     features: [
-      { icon: '📡', title: 'Modality Worklist', description: 'DICOM MWL push to every modality. Patient on table = order on screen.' },
-      { icon: '🖼', title: 'PACS Viewer', description: 'Zero-footprint web viewer. Compare priors, multi-planar reconstruction, measurements.' },
-      { icon: '🧠', title: 'AI Assist', description: 'Lung nodule, ICH, fracture, mammography — preliminary findings before you read.' },
-      { icon: '🎙', title: 'Voice Reporting', description: 'Multilingual dictation (Arabic + English) with structured templates per modality.' },
-      { icon: '👥', title: 'Peer Review', description: 'Random sampling for QA, double-read for critical findings, discrepancy tracking.' },
-      { icon: '☢️', title: 'Dose Tracking', description: 'CTDIvol/DLP per study, ICRP-103 limits, per-patient cumulative dose log.' },
+      { icon: '📡', title: 'Modality Worklist',  description: 'DICOM MWL push to every modality. Patient on table = order on screen.' },
+      { icon: '🧠', title: 'AI Assist',           description: 'Lung nodule, ICH, fracture, mammography — preliminary findings before you read.' },
+      { icon: '🎙', title: 'Voice Reporting',    description: 'Multilingual dictation (Arabic + English) with structured templates per modality.' },
+      { icon: '🏗', title: 'Equipment Lifecycle', description: 'CT, MRI, X-ray, ultrasound — depreciation, AMC, AERB licensing, dose calibration.' },
+      { icon: '👥', title: 'HR & Payroll',       description: 'Radiologists (with read incentives), techs, on-call pay, GOSI compliance.' },
+      { icon: '📦', title: 'Consumables',         description: 'Contrast, film, AERB cassettes, lead protection — tracked and auto-reordered.' },
     ],
-    allowedModules: [
-      'radiology', 'ai', 'dose', 'peerreview',
-      'patient', 'billing', 'reporting',
+    moduleGroups: [
+      {
+        label: 'Imaging Operations',
+        modules: ['radiology', 'ai', 'dose', 'peerreview', 'patient'],
+      },
+      ...FULL_ERP,
     ],
     defaultRoute: '/demo/radiology/workspace/radiology',
     tourSteps: [
-      { route: '/demo/radiology/workspace/radiology', title: 'Modality Worklist', body: 'Every study from every modality in one queue. STAT highlighted, drag to reassign, priors auto-loaded.' },
-      { route: '/demo/radiology/workspace/ai', title: 'AI-Assisted Reading', body: 'Lung nodules detected. ICH probability scored. Fracture lines highlighted. You confirm or override.' },
-      { route: '/demo/radiology/workspace/peerreview', title: 'Peer Review QA', body: 'Random 3% of cases auto-flagged for second read. Discrepancies logged and tracked for accreditation.' },
-      { route: '/demo/radiology/workspace/dose', title: 'Dose Management', body: 'Per-study DLP, per-patient cumulative. Alert at threshold. Pediatric protocols flagged.' },
-      { route: '/demo/radiology/workspace/reporting', title: 'Performance Dashboard', body: 'Studies per radiologist, average read time, AI override rate, modality utilization.' },
+      { route: '/demo/radiology/workspace/radiology', title: 'Modality Worklist', body: 'Every study from every modality in one queue. STAT highlighted, priors auto-loaded.' },
+      { route: '/demo/radiology/workspace/ai',        title: 'AI-Assisted Reading',body: 'Lung nodules, ICH, fractures highlighted. You confirm or override.' },
+      { route: '/demo/radiology/workspace/assets',    title: 'Imaging Equipment',  body: 'CT, MRI, X-Ray — SAR 8M+ assets tracked. AMC, calibration, AERB licensing.' },
+      { route: '/demo/radiology/workspace/payroll',   title: 'Radiologist Comp',   body: 'Base + read incentives + on-call. Multi-modality, multi-shift, all handled.' },
+      { route: '/demo/radiology/workspace/accounting',title: 'Per-Modality P&L',   body: 'Revenue per CT, per MRI scan. ROI per equipment. Cost per read.' },
     ],
     testimonial: {
-      quote: 'My read volume went up 47% because the AI surfaces what matters first. The Arabic voice reporting is the best I\'ve used.',
+      quote: 'My read volume went up 47% because the AI surfaces what matters first. And I finally see the ROI per CT scanner.',
       author: 'Dr. Mohammed Al-Ghamdi',
       role: 'Chief Radiologist',
       org: 'Saudi German Hospitals — Riyadh',
@@ -318,14 +348,19 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     painPoints: [
       'PACS, RIS, and reporting in three different systems',
       'No AI integration — every study read from scratch',
-      'Dose tracking on Excel — regulatory exposure',
-      'Voice software doesn\'t understand Arabic medical terminology',
+      'Equipment lifecycle tracked on Excel — AERB and JCI exposure',
+      'Radiologist read-incentive comp calculated manually every month',
     ],
   },
 };
 
 export function getPersona(id: string): Persona | null {
   return PERSONAS[id as PersonaId] ?? null;
+}
+
+// Flat allowed-modules list (used for runtime route guards)
+export function allowedModulesFor(p: Persona): string[] {
+  return p.moduleGroups.flatMap((g) => g.modules);
 }
 
 export const ALL_PERSONAS = Object.values(PERSONAS);
