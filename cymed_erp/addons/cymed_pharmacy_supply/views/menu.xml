@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_pharmacy_root" name="CyMed Pharmacy Supply" sequence="50"
+              web_icon="cymed_pharmacy_supply,static/src/img/icon.png"/>
+
+    <menuitem id="menu_formulary" name="Drug Formulary" parent="menu_pharmacy_root"
+              action="action_drug_formulary" sequence="10"/>
+    <menuitem id="menu_cs_log" name="Controlled Substance Register" parent="menu_pharmacy_root"
+              action="action_cs_log" sequence="20"/>
+    <menuitem id="menu_cs_recon" name="Shift Reconciliations" parent="menu_pharmacy_root"
+              action="action_cs_recon" sequence="30"/>
+    <menuitem id="menu_recall" name="Drug Recalls" parent="menu_pharmacy_root"
+              action="action_recall" sequence="40"/>
+    <menuitem id="menu_replen_root" name="Ward Replenishment" parent="menu_pharmacy_root" sequence="50"/>
+    <menuitem id="menu_par" name="Par Levels" parent="menu_replen_root"
+              action="action_par_level" sequence="10"/>
+    <menuitem id="menu_replen" name="Replenishment Runs" parent="menu_replen_root"
+              action="action_replen_run" sequence="20"/>
+</odoo>

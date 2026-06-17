@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_recall_list" model="ir.ui.view">
+        <field name="name">cymed.drug.recall.list</field>
+        <field name="model">cymed.drug.recall</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="classification == 'class_1'" decoration-warning="classification == 'class_2'">
+                <field name="recall_number"/>
+                <field name="recall_date"/>
+                <field name="drug_id"/>
+                <field name="classification"/>
+                <field name="notified_by"/>
+                <field name="total_qty_affected"/>
+                <field name="facilities_affected"/>
+                <field name="patients_notified"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_recall_form" model="ir.ui.view">
+        <field name="name">cymed.drug.recall.form</field>
+        <field name="model">cymed.drug.recall</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_quarantine_stock" string="Quarantine Affected Stock" type="object"
+                            class="btn-warning" invisible="state != 'issued'"/>
+                    <button name="action_notify_patients" string="Notify Patients" type="object"
+                            class="btn-warning" invisible="state != 'quarantined'"/>
+                    <button name="action_close" string="Close Recall" type="object"
+                            class="btn-secondary" invisible="state not in ('notifying','returning')"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="recall_number" placeholder="Recall #"/></h1>
+                        <h3 class="text-danger"><field name="classification" readonly="1"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="recall_date"/>
+                            <field name="notified_by"/>
+                            <field name="drug_id"/>
+                            <field name="manufacturer_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="deadline_action"/>
+                            <field name="total_qty_affected" readonly="1"/>
+                            <field name="facilities_affected" readonly="1"/>
+                            <field name="patients_notified" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Affected Lots">
+                            <field name="affected_lot_numbers" placeholder="Paste lot numbers, one per line..."/>
+                            <field name="affected_expiry_from"/>
+                            <field name="affected_expiry_to"/>
+                            <field name="affected_lot_ids" readonly="1">
+                                <list><field name="name"/><field name="product_id"/><field name="product_qty"/></list>
+                            </field>
+                        </page>
+                        <page string="Reason &amp; Instructions">
+                            <field name="reason"/>
+                            <field name="health_risk"/>
+                            <field name="action_instructions"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_recall" model="ir.actions.act_window">
+        <field name="name">Drug Recalls</field>
+        <field name="res_model">cymed.drug.recall</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

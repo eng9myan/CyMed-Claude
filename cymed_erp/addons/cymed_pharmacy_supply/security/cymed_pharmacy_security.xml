@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+    <record id="cymed_pharmacy_module_category" model="ir.module.category">
+        <field name="name">CyMed Pharmacy</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="group_pharmacist" model="res.groups">
+        <field name="name">Pharmacist</field>
+        <field name="category_id" ref="cymed_pharmacy_module_category"/>
+    </record>
+    <record id="group_pharmacy_supervisor" model="res.groups">
+        <field name="name">Pharmacy Supervisor</field>
+        <field name="category_id" ref="cymed_pharmacy_module_category"/>
+        <field name="implied_ids" eval="[(4, ref('group_pharmacist'))]"/>
+    </record>
+</data></odoo>

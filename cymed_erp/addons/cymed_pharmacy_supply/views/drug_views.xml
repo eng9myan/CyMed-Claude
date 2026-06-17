@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Drug Formulary List ─────────────────────────────────────────── -->
+    <record id="view_drug_formulary_list" model="ir.ui.view">
+        <field name="name">cymed.drug.formulary.list</field>
+        <field name="model">cymed.drug.formulary</field>
+        <field name="arch" type="xml">
+            <list string="Drug Formulary" decoration-danger="is_controlled" decoration-warning="high_alert">
+                <field name="atc_code"/>
+                <field name="name"/>
+                <field name="generic_name"/>
+                <field name="dose_form"/>
+                <field name="strength"/>
+                <field name="manufacturer_id"/>
+                <field name="therapeutic_class"/>
+                <field name="is_controlled" widget="boolean"/>
+                <field name="controlled_schedule"/>
+                <field name="high_alert" widget="boolean"/>
+                <field name="requires_cold_chain" widget="boolean"/>
+                <field name="formulary_status_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Drug Formulary Kanban ───────────────────────────────────────── -->
+    <record id="view_drug_formulary_kanban" model="ir.ui.view">
+        <field name="name">cymed.drug.formulary.kanban</field>
+        <field name="model">cymed.drug.formulary</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="therapeutic_class" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="generic_name"/>
+                <field name="dose_form"/>
+                <field name="strength"/>
+                <field name="manufacturer_id"/>
+                <field name="is_controlled"/>
+                <field name="high_alert"/>
+                <field name="requires_cold_chain"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong><field name="name"/></strong>
+                                <div><field name="generic_name"/> · <field name="strength"/> <field name="dose_form"/></div>
+                                <div class="text-muted"><field name="manufacturer_id"/></div>
+                                <div>
+                                    <span t-if="record.is_controlled.raw_value" class="badge text-bg-danger">Controlled</span>
+                                    <span t-if="record.high_alert.raw_value" class="badge text-bg-warning">High Alert</span>
+                                    <span t-if="record.requires_cold_chain.raw_value" class="badge text-bg-info">Cold Chain</span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ── Drug Formulary Form ─────────────────────────────────────────── -->
+    <record id="view_drug_formulary_form" model="ir.ui.view">
+        <field name="name">cymed.drug.formulary.form</field>
+        <field name="model">cymed.drug.formulary</field>
+        <field name="arch" type="xml">
+            <form string="Drug Formulary Entry">
+                <header>
+                    <field name="formulary_status_id" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Drug Name"/></h1>
+                        <h3><field name="generic_name" placeholder="Generic Name"/></h3>
+                    </div>
+                    <group>
+                        <group string="Identity">
+                            <field name="brand_name"/>
+                            <field name="manufacturer_id"/>
+                            <field name="atc_code"/>
+                            <field name="therapeutic_class"/>
+                        </group>
+                        <group string="Pharmaceutical">
+                            <field name="dose_form"/>
+                            <field name="strength"/>
+                            <field name="route_of_admin"/>
+                            <field name="allergen_class"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Regulatory">
+                            <group>
+                                <group>
+                                    <field name="sfda_code"/>
+                                    <field name="fda_ndc"/>
+                                    <field name="ema_code"/>
+                                </group>
+                                <group>
+                                    <field name="is_controlled"/>
+                                    <field name="controlled_schedule" invisible="not is_controlled"/>
+                                    <field name="requires_witness" invisible="not is_controlled"/>
+                                    <field name="requires_prescription"/>
+                                    <field name="high_alert"/>
+                                    <field name="look_alike_sound_alike"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Storage">
+                            <group>
+                                <field name="storage_temp_min"/>
+                                <field name="storage_temp_max"/>
+                                <field name="requires_cold_chain"/>
+                                <field name="light_sensitive"/>
+                                <field name="moisture_sensitive"/>
+                            </group>
+                        </page>
+                        <page string="Procurement">
+                            <group>
+                                <field name="product_id"/>
+                                <field name="preferred_vendor_id"/>
+                                <field name="contract_price"/>
+                            </group>
+                        </page>
+                        <page string="Active Ingredients">
+                            <field name="active_ingredient_ids">
+                                <list editable="bottom">
+                                    <field name="ingredient"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Interactions &amp; Contraindications">
+                            <field name="interaction_ids" widget="many2many_tags"/>
+                            <field name="contraindication_ids"/>
+                        </page>
+                        <page string="Formulary">
+                            <group>
+                                <field name="formulary_review_date"/>
+                                <field name="formulary_notes"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Search ──────────────────────────────────────────────────────── -->
+    <record id="view_drug_formulary_search" model="ir.ui.view">
+        <field name="name">cymed.drug.formulary.search</field>
+        <field name="model">cymed.drug.formulary</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="generic_name"/>
+                <field name="atc_code"/>
+                <field name="sfda_code"/>
+                <field name="manufacturer_id"/>
+                <separator/>
+                <filter string="Controlled" name="controlled" domain="[('is_controlled', '=', True)]"/>
+                <filter string="High Alert" name="high_alert" domain="[('high_alert', '=', True)]"/>
+                <filter string="Cold Chain" name="cold_chain" domain="[('requires_cold_chain', '=', True)]"/>
+                <filter string="LASA" name="lasa" domain="[('look_alike_sound_alike', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Therapeutic Class" name="grp_class" context="{'group_by': 'therapeutic_class'}"/>
+                    <filter string="Dose Form" name="grp_form" context="{'group_by': 'dose_form'}"/>
+                    <filter string="Manufacturer" name="grp_mfg" context="{'group_by': 'manufacturer_id'}"/>
+                    <filter string="Status" name="grp_status" context="{'group_by': 'formulary_status_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Action ──────────────────────────────────────────────────────── -->
+    <record id="action_drug_formulary" model="ir.actions.act_window">
+        <field name="name">Drug Formulary</field>
+        <field name="res_model">cymed.drug.formulary</field>
+        <field name="view_mode">list,kanban,form</field>
+    </record>
+
+</odoo>

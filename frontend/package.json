@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4000",
+    "dev:webpack": "next dev -p 4000 --turbopack=false",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -40,5 +41,10 @@
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "allowScripts": {
+    "cypress@15.17.0": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.12.2": true
   }
 }

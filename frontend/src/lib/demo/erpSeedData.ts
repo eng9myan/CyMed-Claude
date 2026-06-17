@@ -576,6 +576,35 @@ function reportingData(p: PersonaId): ModuleData {
   };
 }
 
+// ── Supply Chain Dashboard ──────────────────────────────────────────────────
+function supplyDashboardData(p: PersonaId): ModuleData {
+  const s = SCALE[p];
+  return {
+    subtitle: 'Inventory value · stock aging · vendor performance · forecast accuracy',
+    kpis: [
+      { label: 'Total Inventory Value',  value: fmtSAR(s.inventoryValue), sub: 'at cost · all locations' },
+      { label: 'Stock at Risk',          value: fmtSAR(s.inventoryValue * 0.06), sub: 'aged > 180 days' },
+      { label: 'Expiring < 90 days',     value: '47 SKUs', sub: fmtSAR(s.inventoryValue * 0.04) + ' value' },
+      { label: 'Active Stockouts',       value: '3',  sub: 'auto-PO triggered' },
+      { label: 'Inventory Turnover',     value: '8.4x',sub: 'annualized · industry: 6.2x' },
+      { label: 'Carrying Cost MTD',      value: fmtSAR(s.inventoryValue * 0.025), sub: '~2.5% holding rate' },
+      { label: 'Vendor Performance Avg', value: '94%',sub: 'OTIF score' },
+      { label: 'AI Forecast Accuracy',   value: '91%',sub: 'rolling 30 days' },
+    ],
+    tableTitle: 'Top Vendors (Performance Scorecard)',
+    table: {
+      cols: ['Vendor', 'Open POs', 'OTIF %', 'Quality %', 'Score', 'Grade'],
+      rows: [
+        ['Al-Dawaa Medical Supplies', '14', '98%', '99%', '4.8', { badge: 'A' }],
+        ['IQVIA Arabia',              '8',  '94%', '97%', '4.6', { badge: 'A' }],
+        ['Integrated Gulf Biosystems','4',  '88%', '94%', '4.2', { badge: 'B' }],
+        ['Roche Diagnostics ME',      '6',  '99%', '100%','4.9', { badge: 'A+' }],
+        ['GE Healthcare KSA',         '3',  '92%', '98%', '4.5', { badge: 'A' }],
+      ],
+    },
+  };
+}
+
 // ── Master export ───────────────────────────────────────────────────────────
 export function getERPData(persona: PersonaId, moduleId: string): ModuleData | null {
   const handlers: Record<string, (p: PersonaId) => ModuleData> = {
@@ -595,6 +624,7 @@ export function getERPData(persona: PersonaId, moduleId: string): ModuleData | n
     crm:           crmData,
     marketing:     marketingData,
     reporting:     reportingData,
+    supply_dashboard: supplyDashboardData,
   };
   return handlers[moduleId]?.(persona) ?? null;
 }

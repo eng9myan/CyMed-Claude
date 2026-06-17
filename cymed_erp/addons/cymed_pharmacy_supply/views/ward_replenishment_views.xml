@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_par_list" model="ir.ui.view">
+        <field name="name">cymed.par.level.list</field>
+        <field name="model">cymed.ward.par.level</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="ward_location_id"/>
+                <field name="drug_id"/>
+                <field name="par_qty"/>
+                <field name="min_qty"/>
+                <field name="max_qty"/>
+                <field name="daily_avg_usage"/>
+                <field name="is_crash_cart" widget="boolean"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_par_level" model="ir.actions.act_window">
+        <field name="name">Ward Par Levels</field>
+        <field name="res_model">cymed.ward.par.level</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_replen_run_list" model="ir.ui.view">
+        <field name="name">cymed.replen.run.list</field>
+        <field name="model">cymed.ward.replenishment.run</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="run_date"/>
+                <field name="triggered_by"/>
+                <field name="pharmacist_id"/>
+                <field name="total_lines"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_replen_run_form" model="ir.ui.view">
+        <field name="name">cymed.replen.run.form</field>
+        <field name="model">cymed.ward.replenishment.run</field>
+        <field name="arch" type="xml">
+            <form>
+                <header><field name="state" widget="statusbar"/></header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="run_date"/>
+                        <field name="triggered_by"/>
+                        <field name="pharmacist_id"/>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="drug_id"/>
+                            <field name="current_qty"/>
+                            <field name="suggested_qty"/>
+                            <field name="approved_qty"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_replen_run" model="ir.actions.act_window">
+        <field name="name">Replenishment Runs</field>
+        <field name="res_model">cymed.ward.replenishment.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import type { Persona } from '@/lib/demo/personas';
 import { DEMO_DATA } from '@/lib/demo/seedData';
 import { getERPData } from '@/lib/demo/erpSeedData';
+import { getClinicalData, NETWORK_FACILITIES } from '@/lib/demo/clinicalSeedData';
 
 interface Props { persona: Persona; moduleId: string; }
 
@@ -56,13 +57,12 @@ const TITLES: Record<string, string> = {
 
 export function DemoModule({ persona, moduleId }: Props) {
   const data = useMemo(() => {
-    // First look in persona-specific seed (clinical / operational modules)
-    const clinical = DEMO_DATA[persona.id]?.[moduleId];
-    if (clinical) return clinical;
-    // Otherwise fall back to shared ERP seed (HR, Payroll, Accounting, etc.)
-    return getERPData(persona.id, moduleId);
+    return DEMO_DATA[persona.id]?.[moduleId]
+        ?? getClinicalData(persona.id, moduleId)
+        ?? getERPData(persona.id, moduleId);
   }, [persona.id, moduleId]);
   const title = TITLES[moduleId] ?? moduleId;
+  const facilities = NETWORK_FACILITIES[persona.id] ?? [];
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -75,6 +75,22 @@ export function DemoModule({ persona, moduleId }: Props) {
         <h1 className="text-3xl font-bold">{title}</h1>
         {data?.subtitle && <p className="text-slate-400 text-sm mt-1">{data.subtitle}</p>}
       </header>
+
+      {/* Network facilities badge */}
+      {facilities.length > 0 && (
+        <div className="mb-6 bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center gap-3 overflow-x-auto">
+          <span className="text-xs uppercase font-bold tracking-wider flex-shrink-0" style={{ color: persona.accentColor }}>
+            🌐 Network ({facilities.length})
+          </span>
+          <div className="flex gap-2 flex-wrap">
+            {facilities.map((f) => (
+              <span key={f} className="text-xs px-2 py-1 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">
+                {f}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* KPI row */}
       {data?.kpis && (
