@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ALL_PERSONAS } from '@/lib/demo/personas';
+import { ALL_PERSONAS, allowedModulesFor } from '@/lib/demo/personas';
 
 export const metadata = { title: 'CyMed Demo Catalog (internal)' };
 
@@ -38,7 +38,7 @@ export default function DemoIndex() {
                 {p.heroSubhead.slice(0, 110)}...
               </p>
               <div className="space-y-1 mb-4">
-                <div className="text-xs text-slate-400">Modules shown: <span className="text-white font-medium">{p.allowedModules.length}</span></div>
+                <div className="text-xs text-slate-400">Modules shown: <span className="text-white font-medium">{allowedModulesFor(p).length}</span></div>
                 <div className="text-xs text-slate-400">Tour steps: <span className="text-white font-medium">{p.tourSteps.length}</span></div>
                 <div className="text-xs text-slate-400">Recommended: <span className="text-white font-medium">{p.recommendedPlan}</span></div>
               </div>
